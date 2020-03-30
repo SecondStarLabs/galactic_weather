@@ -6,6 +6,7 @@ class Projects::ProjectUsersController < ApplicationController
     project_user.project = @project
 
     if project_user.save
+      # TODO: Send email notification of project if user is already active
       redirect_to @project, notice: "success"
     else
       redirect_to @project, alert: "fail!"

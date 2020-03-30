@@ -27,10 +27,13 @@
 
   <h4>Users</h4>
   <ul class="user-list">
-    <%# @project.users.each do |user| %>
-
-    
-    <%# end %>
+    <% @project.users.each do |user| %>
+      <li class="user">
+         <%= "#{user.email} (#{user.first_name})"  %>
+            
+      </li>
+         
+    <% end %>
     
   </ul>
 </dl>
