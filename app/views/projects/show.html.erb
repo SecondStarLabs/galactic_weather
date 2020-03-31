@@ -1,0 +1,39 @@
+<div class="page-header">
+  <%= link_to projects_path, class: 'btn btn-default' do %>
+    All Projects
+  <% end %>
+  <%= link_to edit_project_path(@project), class: 'btn btn-primary' do %>
+    Edit
+  <% end %>
+  <h1>Show project</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @project.name %></dd>
+
+</dl>
+
+<dl>
+  <h4>Add User</h4>
+
+  <%= form_for [@project, ProjectUser.new] do |f| %>
+  <div class="invite-email-address">
+    <%= f.text_field :email, required: true%>
+  </div>
+  
+  <%= f.submit "Invite!"%>
+  <% end %>
+
+  <h4>Users</h4>
+  <ul class="user-list">
+    <% @project.users.each do |user| %>
+      <li class="user">
+         <%= "#{user.email} (#{user.first_name})"  %>
+            
+      </li>
+         
+    <% end %>
+    
+  </ul>
+</dl>

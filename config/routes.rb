@@ -1,6 +1,10 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'mars/index'
+  resources :projects do
+    resources :project_users, path: :users, module: :projects
+  end
   namespace :admin do
     resources :users
     resources :announcements
@@ -17,6 +21,7 @@ Rails.application.routes.draw do
 
 
   resources :notifications, only: [:index]
+  resources :mars, only: [:index]
   resources :announcements, only: [:index]
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   root to: 'home#index'
