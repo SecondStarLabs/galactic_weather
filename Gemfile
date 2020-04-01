@@ -73,3 +73,5 @@ gem 'whenever', require: false
 ## app-specific gems
 # for teams
 gem 'devise_invitable', '~> 2.0', '>= 2.0.1'
+# for api connections
+gem 'httparty', '~> 0.18.0'
