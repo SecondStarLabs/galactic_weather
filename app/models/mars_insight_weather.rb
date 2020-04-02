@@ -35,17 +35,35 @@ class MarsInsightWeather
     end
 
     def return_default_response
-        @response   = self.galactic_client.insight_weather        
+        @response   = self.galactic_client.insight_weather
+        @response   = @response.parsed_response
+        # @response = Representation.new(@response)
     end
 
     def return_insight_readings
-        @response   = self.galactic_client.insight_weather        
+        @response   = self.galactic_client.insight_weather
+        @response.parsed_response
+        # @response = Representation.new(@response)
     end
 
     def return_msl_readings
-        @response   = self.galactic_client.msl_marsweather        
+        @response   = self.galactic_client.msl_marsweather.parsed_response
+        @response   = @response.fetch("soles", 'invailid_response')
+        # @response   = @response.parsed_response
+        # @response = Representation.new(@response)
     end
 
+    def convert_msl_readings_into_collection_of_sols
+        msl_readings = self.return_msl_readings
+        sols_collection = Array.new
+        msl_readings.each do |msl_reading|
+            sol = Sol.new
+            msl_reading_to_json = msl_reading.to_json
+            sol_representation = SolRepresenter.new(sol).from_json(msl_reading_to_json)
+            sols_collection << sol_representation
+        end
+        sols_collection
+    end
 
 
 end

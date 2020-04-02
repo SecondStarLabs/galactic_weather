@@ -75,3 +75,5 @@ gem 'whenever', require: false
 gem 'devise_invitable', '~> 2.0', '>= 2.0.1'
 # for api connections
 gem 'httparty', '~> 0.18.0'
+# to create Representations of json
+gem 'representable', '~> 3.0', '>= 3.0.4'
