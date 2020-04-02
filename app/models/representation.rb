@@ -35,7 +35,7 @@ class Representation < OpenStruct
     representation.each do |entity_type, value|
       add_to_table(entity_type, value)
       add_to_hash_table(entity_type, value)
-      new_ostruct_member(entity_type)
+      new_ostruct_member!(entity_type)
     end
   end
 

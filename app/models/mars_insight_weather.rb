@@ -11,7 +11,7 @@ class MarsInsightWeather
         }
     }
 
-    attr_reader :api_key, :routes, :connection
+    attr_reader :api_key, :routes, :connection, :response
 
 
     def initialize(api_key: "DEMO_KEY", routes: ROUTES, connection: InSightApiConnection.new)
@@ -53,13 +53,33 @@ class MarsInsightWeather
         # @response = Representation.new(@response)
     end
 
+    def convert_insight_readings_into_collection_of_sols
+        insight_readings = self.return_insight_readings
+        #clean up collection of readings for easy parsing
+        insight_readings.delete("validity_checks")
+        insight_readings.delete("sol_keys")
+
+        sols_collection = Array.new
+        insight_readings.each do |insight_reading|
+            insight_reading_sol = insight_reading.first
+            insight_reading_data = insight_reading[1]
+            insight_reading_data["sol"] = insight_reading_sol
+
+            sol = Sol.new            
+            insight_reading_to_json = insight_reading_data.to_json
+            sol_representation = SolRepresenter.new(sol).from_json(insight_reading_to_json)
+            sols_collection << sol_representation
+        end
+        sols_collection
+    end
+
     def convert_msl_readings_into_collection_of_sols
         msl_readings = self.return_msl_readings
         sols_collection = Array.new
         msl_readings.each do |msl_reading|
             sol = Sol.new
             msl_reading_to_json = msl_reading.to_json
-            sol_representation = SolRepresenter.new(sol).from_json(msl_reading_to_json)
+            sol_representation = MslSolRepresenter.new(sol).from_json(msl_reading_to_json)
             sols_collection << sol_representation
         end
         sols_collection

@@ -1,6 +1,7 @@
 class ApiNasaConnection
   include HTTParty
-    debug_output $stdout
+    # turn on next line for more verbose data from HTTParty
+    # debug_output $stdout
 
   DEFAULT_API_VERSION = "1.0"
   DEFAULT_BASE_URI    = "https://api.nasa.gov"
