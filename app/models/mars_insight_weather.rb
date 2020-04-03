@@ -58,16 +58,40 @@ class MarsInsightWeather
         #clean up collection of readings for easy parsing
         insight_readings.delete("validity_checks")
         insight_readings.delete("sol_keys")
+        # focus on the hashes, otherwise you get something like ["472", {"AT"=>{"av"=>-52.902, "ct"=>263818, "mn"=>-94.156, "mx"=>-7.782}]
 
         sols_collection = Array.new
         insight_readings.each do |insight_reading|
             insight_reading_sol = insight_reading.first
             insight_reading_data = insight_reading[1]
             insight_reading_data["sol"] = insight_reading_sol
-
             sol = Sol.new            
             insight_reading_to_json = insight_reading_data.to_json
+            # pp insight_reading_to_json
+            # initiate sol_representation with properties
             sol_representation = SolRepresenter.new(sol).from_json(insight_reading_to_json)
+            # extract wind speed and direction
+            wind_speed_hash = insight_reading_data.fetch("WD").fetch("most_common")
+            insight_reading_data.delete("WD")
+            # add atomospheric readings as an OpenStruct, Sol, after converting from the current hash
+            sol_obj = JSON.parse(insight_reading_data.to_json, object_class: Sol)
+            pp "sol_obj are #{sol_obj} "
+
+            # add data sets to sol_representation
+            sol_representation.temperatures = sol_obj.AT
+            sol_representation.pressure    = sol_obj.PRE
+            sol_representation.wind_speed   = Sol.new(wind_speed_hash)
+
+            # clean up poorly named attributes from the API
+            sol_representation.first_utc    = sol_representation.First_UTC
+            sol_representation.last_utc     = sol_representation.Last_UTC
+            sol_representation.season       = sol_representation.Season
+            
+            sol_representation.delete_field(:First_UTC)
+            sol_representation.delete_field(:Last_UTC)
+            sol_representation.delete_field(:Season)
+
+
             sols_collection << sol_representation
         end
         sols_collection
