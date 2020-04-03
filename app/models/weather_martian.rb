@@ -1,4 +1,4 @@
-class MarsInsightWeather
+class WeatherMartian
     # insight station and curiosity rover, respectively
     ROUTES = {
         insight_weather: {
@@ -37,20 +37,16 @@ class MarsInsightWeather
     def return_default_response
         @response   = self.galactic_client.insight_weather
         @response   = @response.parsed_response
-        # @response = Representation.new(@response)
     end
 
     def return_insight_readings
         @response   = self.galactic_client.insight_weather
         @response.parsed_response
-        # @response = Representation.new(@response)
     end
 
     def return_msl_readings
         @response   = self.galactic_client.msl_marsweather.parsed_response
         @response   = @response.fetch("soles", 'invailid_response')
-        # @response   = @response.parsed_response
-        # @response = Representation.new(@response)
     end
 
     def convert_insight_readings_into_collection_of_sols

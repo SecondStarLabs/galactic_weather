@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MarsInsightWeatherTest < ActiveSupport::TestCase
+class WeatherMartianTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
