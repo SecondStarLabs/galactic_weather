@@ -1,0 +1,2 @@
+class Sol < OpenStruct
+end
