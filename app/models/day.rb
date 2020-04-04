@@ -1,0 +1,2 @@
+class Day < OpenStruct
+end

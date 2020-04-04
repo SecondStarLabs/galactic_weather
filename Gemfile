@@ -77,3 +77,5 @@ gem 'devise_invitable', '~> 2.0', '>= 2.0.1'
 gem 'httparty', '~> 0.18.0'
 # to create Representations of json
 gem 'representable', '~> 3.0', '>= 3.0.4'
+# connect with open weather
+gem 'open-weather', '~> 0.12.0'
