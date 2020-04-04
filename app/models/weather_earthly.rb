@@ -46,7 +46,7 @@ class WeatherEarthly
 
     def get_current_weather_for_cities_around_a_point(lat, lon, radius)
         # OpenWeather::Current.circle_zone(55.5, 37.5, 10, options)
-        OpenWeather::Current.circle_zone(lat, lon, radius, options)
+        OpenWeather::Current.circle_zone(lat.to_s, lon.to_s, radius.to_s, options)
     end
 
     def create_representation(day_reading)
