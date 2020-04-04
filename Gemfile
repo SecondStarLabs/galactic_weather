@@ -78,4 +78,4 @@ gem 'httparty', '~> 0.18.0'
 # to create Representations of json
 gem 'representable', '~> 3.0', '>= 3.0.4'
 # connect with open weather
-gem 'OpenWeather', '~> 0.0.5'
+gem 'open-weather', '~> 0.12.0'

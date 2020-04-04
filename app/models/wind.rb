@@ -1,0 +1,2 @@
+class Wind < OpenStruct
+end

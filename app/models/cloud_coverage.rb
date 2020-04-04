@@ -1,0 +1,2 @@
+class CloudCoverage < OpenStruct
+end
