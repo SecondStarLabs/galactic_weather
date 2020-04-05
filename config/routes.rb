@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :cities
   get 'mars/index'
   resources :projects do
     resources :project_users, path: :users, module: :projects
