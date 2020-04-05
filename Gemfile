@@ -79,3 +79,5 @@ gem 'httparty', '~> 0.18.0'
 gem 'representable', '~> 3.0', '>= 3.0.4'
 # connect with open weather
 gem 'open-weather', '~> 0.12.0'
+# country_info lookup
+gem 'countries', '~> 3.0', '>= 3.0.1', require: 'countries/global'
