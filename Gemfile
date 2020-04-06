@@ -81,3 +81,5 @@ gem 'representable', '~> 3.0', '>= 3.0.4'
 gem 'open-weather', '~> 0.12.0'
 # country_info lookup
 gem 'countries', '~> 3.0', '>= 3.0.1', require: 'countries/global'
+# store assets on amazon s3
+gem 'aws-sdk-s3', '~> 1.61', '>= 1.61.2'

@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :background_photos
   resources :cities
   get 'mars/index'
   resources :projects do

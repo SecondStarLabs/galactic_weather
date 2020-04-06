@@ -1,5 +1,5 @@
 class City < ApplicationRecord
-
+    has_many_attached :files
     def find_country_code
         c = Country.find_by_name(self.country)
         c.last["alpha2"]

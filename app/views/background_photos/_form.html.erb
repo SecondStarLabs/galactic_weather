@@ -1,0 +1,44 @@
+<%= form_with(model: background_photo, local: true) do |form| %>
+  <% if background_photo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(background_photo.errors.count, "error") %> prohibited this background_photo from being saved:</h2>
+
+      <ul>
+      <% background_photo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :source_url %>
+    <%= form.text_area :source_url, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :files %>
+    <%= form.file_field :files, multiple: false, direct_upload: true, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <% if background_photo.persisted? %>
+      <div class="float-right">
+        <%= link_to 'Destroy', background_photo, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+
+    <%= form.submit class: 'btn btn-primary' %>
+
+    <% if background_photo.persisted? %>
+      <%= link_to "Cancel", background_photo, class: "btn btn-link" %>
+    <% else %>
+      <%= link_to "Cancel", background_photos_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+<% end %>

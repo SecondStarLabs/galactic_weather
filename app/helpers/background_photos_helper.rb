@@ -1,0 +1,2 @@
+module BackgroundPhotosHelper
+end
