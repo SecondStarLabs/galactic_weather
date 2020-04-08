@@ -1,5 +1,6 @@
 class CitiesController < ApplicationController
   before_action :set_city, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy ]
 
   # GET /cities
   # GET /cities.json
@@ -69,6 +70,6 @@ class CitiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def city_params
-      params.require(:city).permit(:name, :country, :lat, :lon, :open_weather_id, files: [])
+      params.require(:city).permit(:name, :country, :lat, :lon, :open_weather_id)
     end
 end

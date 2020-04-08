@@ -1,5 +1,13 @@
 class City < ApplicationRecord
     has_many_attached :files
+    has_many :background_photos
+    has_many :urban_images
+
+    validates :name, presence: true
+    validates :country, presence: true
+    validates :lat, presence: true
+    validates :lon, presence: true
+    
     def find_country_code
         c = Country.find_by_name(self.country)
         c.last["alpha2"]

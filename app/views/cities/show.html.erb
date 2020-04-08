@@ -25,7 +25,10 @@
   <dd><%= @city.open_weather_id %></dd>
 
   <dt>Files:</dt>
-  <dd><% @city.files.each do  |file| %> 
+  <dd>
+      <%= link_to 'Urban Images', city_urban_images_path(@city) %>
+  
+  <% @city.files.each do  |file| %> 
         <%= link_to file.filename, file, target: :blank %>      
       <% end %>
       

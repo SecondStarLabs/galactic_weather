@@ -1,0 +1,42 @@
+
+
+
+<div class="row">
+  <div class="col-sm-6">
+    <h1>Urban Images for <%= link_to @city.name, @city %> </h1>
+  </div>
+
+  <div class="col-sm-6 text-right">
+  <%= link_to new_city_urban_image_path(@city), class: 'btn btn-primary' do %>
+    Add New Urban image
+  <% end %>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+    
+        <th>Name</th>
+    
+
+            <th>Image</th>
+            
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @urban_images.each do |urban_image| %>
+        <%= content_tag :tr, id: dom_id(urban_image), class: dom_class(urban_image) do %>
+          
+            <td><%= link_to urban_image.name, urban_image %></td>
+          
+
+                      <td><%= urban_image.city.name %></td>
+          
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

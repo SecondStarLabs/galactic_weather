@@ -1,0 +1,18 @@
+<div class="page-header">
+  <%= link_to city_urban_images_path(@urban_image.city), class: 'btn btn-default' do %>
+    All Urban_images
+  <% end %>
+  <%= link_to edit_urban_image_path(@urban_image), class: 'btn btn-primary' do %>
+    Edit
+  <% end %>
+  <h1><%= @urban_image.name %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @urban_image.name %></dd>
+
+  <dt>City:</dt>
+  <dd><%= @urban_image.city.name %></dd>
+
+</dl>
