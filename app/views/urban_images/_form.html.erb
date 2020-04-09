@@ -1,0 +1,39 @@
+<%= form_with(model: [@city, urban_image], local: true) do |form| %>
+  <% if urban_image.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(urban_image.errors.count, "error") %> prohibited this urban_image from being saved:</h2>
+
+      <ul>
+      <% urban_image.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :file %>
+    <%= form.file_field :files, multiple: true, direct_upload: true, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <% if urban_image.persisted? %>
+      <div class="float-right">
+        <%= link_to 'Destroy', urban_image, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+
+    <%= form.submit class: 'btn btn-primary' %>
+
+    <% if urban_image.persisted? %>
+      <%= link_to "Cancel", urban_image, class: "btn btn-link" %>
+    <% else %>
+      <%= link_to "Cancel", urban_images_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+<% end %>
