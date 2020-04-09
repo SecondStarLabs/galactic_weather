@@ -1,6 +1,5 @@
 class City < ApplicationRecord
     has_many_attached :files
-    has_many :background_photos
     has_many :urban_images
 
     validates :name, presence: true

@@ -12,6 +12,12 @@
   <dt>Name:</dt>
   <dd><%= @urban_image.name %></dd>
 
+  <dt>Files:</dt>
+  <dd><% @urban_image.files.each do |file| %>
+      <%= link_to file.filename, file, target: :blank %>
+    <% end %>
+  </dd>
+
   <dt>City:</dt>
   <dd><%= @urban_image.city.name %></dd>
 

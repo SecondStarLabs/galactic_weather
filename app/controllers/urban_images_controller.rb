@@ -74,6 +74,6 @@ class UrbanImagesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def urban_image_params
-      params.require(:urban_image).permit(:name, :city_id)
+      params.require(:urban_image).permit(:name, :city_id, files: [])
     end
 end
