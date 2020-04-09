@@ -1,4 +1,11 @@
-<%= form_with(model: city, local: true) do |form| %>
+<%= form_with(model: city, 
+      local: true, 
+      data: {controller: "places", 
+        action: "google-maps-callback@window->places#initMap", 
+        places_latitude: city.latitude, 
+        places_longitude: city.longitude
+        }
+      ) do |form| %>
   <% if city.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(city.errors.count, "error") %> prohibited this city from being saved:</h2>
@@ -21,25 +28,25 @@
     <%= form.text_field :country, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :lat %>
-    <%= form.text_field :lat, class: 'form-control' %>
-  </div>
+      <div class="form-group">
+        <%= form.label :address %>
+        <%= form.search_field :address, class: 'form-control', data: { target: "places.field", action: "keydown->places#keydown" }%>
+      </div>
 
-  <div class="form-group">
-    <%= form.label :lon %>
-    <%= form.text_field :lon, class: 'form-control' %>
-  </div>
+      <div class="form-group">
+        <%= form.label :latitude %>
+        <%= form.text_field :latitude, class: 'form-control', data: { target: "places.latitude" } %>
+      </div>
 
-  <div class="form-group">
-    <%= form.label "open weather ID" %>
-    <%= form.number_field :open_weather_id, class: 'form-control' %>
-  </div>
+      <div class="form-group">
+        <%= form.label :longitude %>
+        <%= form.text_field :longitude, class: 'form-control', data: { target: "places.longitude" } %>
+      </div>
 
-  <div class="form-group">
-    <%= form.label :files %>
-    <%= form.number_field :files, multiple: true, class: 'form-control' %>
-  </div>
+
+    <div class="p-4">
+      <div data-target="places.map" style="height:400px;width:400px"></div>
+    </div>
 
   <div class="form-group">
     <% if city.persisted? %>

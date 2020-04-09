@@ -62,3 +62,14 @@ addEventListener("direct-upload:end", (event) => {
   const element = document.getElementById(`direct-upload-${id}`);
   element.classList.add("direct-upload--complete");
 });
+
+// stimulus
+import "controllers";
+
+// google places and maps
+window.initMap = function(...args) {
+  const event = document.createEvent("Events");
+  event.initEvent("google-maps-callback", true, true);
+  event.args = args;
+  window.dispatchEvent(event);
+};
