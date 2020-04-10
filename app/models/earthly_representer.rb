@@ -3,6 +3,7 @@ class EarthlyRepresenter < Representable::Decorator
 
   # collection
 # "coord"=>{"lon"=>76.26, "lat"=>9.94}
+  property :id
   property :coord, class: Coord do
     property :lat
     property :lon

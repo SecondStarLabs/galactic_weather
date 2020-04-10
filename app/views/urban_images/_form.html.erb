@@ -33,7 +33,7 @@
     <% if urban_image.persisted? %>
       <%= link_to "Cancel", urban_image, class: "btn btn-link" %>
     <% else %>
-      <%= link_to "Cancel", urban_images_path, class: "btn btn-link" %>
+      <%= link_to "Cancel", city_urban_images_path(@city), class: "btn btn-link" %>
     <% end %>
   </div>
 <% end %>

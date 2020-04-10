@@ -10,14 +10,12 @@ class EarthlyCityGeoCollection
     def discover_and_save_city_info
         we                  = WeatherEarthly.new
         current_readings    = we.get_current_weather_for_cities_around_a_point(lat, lon, radius)
-        representations     = current_readings["list"].collect {|current_reading| pp we.create_representation(current_reading)}
-        representations.each do |city_rep|
-            city            = City.find_or_initialize_by(open_weather_id: city_rep.id) 
-            city.lat        = city_rep.coord.lat
-            city.lon        = city_rep.coord.lon
-            city.name       = city_rep.name
-            city.country    = city_rep.sys.country
-            city.save!
-        end
+        representations     = current_readings.fetch("list")
+                                .collect {|current_reading| we.create_representation(current_reading)}
+    end
+
+    def get_first_weather_station_in_listed_radius
+        station_collection = discover_and_save_city_info
+        first_city          = station_collection.first
     end
 end
