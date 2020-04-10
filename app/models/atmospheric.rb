@@ -1,0 +1,2 @@
+class Atmospheric < OpenStruct
+end

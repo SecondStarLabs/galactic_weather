@@ -7,7 +7,7 @@ Things you may want to cover:
 
 * Ruby version – see the gemfile, 2.7.0 as of March 30, 2020
 
-* System dependencies
+* System dependencies -- Rails
 
 * Configuration
 

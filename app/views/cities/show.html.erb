@@ -1,0 +1,36 @@
+<div class="page-header">
+  <%= link_to cities_path, class: 'btn btn-default' do %>
+    All Cities
+  <% end %>
+  <%= link_to edit_city_path(@city), class: 'btn btn-primary' do %>
+    Edit
+  <% end %>
+  <h1>Show city</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @city.name %></dd>
+
+  <dt>Country:</dt>
+  <dd><%= @city.country %></dd>
+
+  <dt>Lat:</dt>
+  <dd><%= @city.lat %></dd>
+
+  <dt>Lon:</dt>
+  <dd><%= @city.lon %></dd>
+
+  <dt>Open weather:</dt>
+  <dd><%= @city.open_weather_id %></dd>
+
+  <dt>Files:</dt>
+  <dd>
+      <%= link_to 'Urban Images', city_urban_images_path(@city) %>
+  
+  <% @city.files.each do  |file| %> 
+        <%= link_to file.filename, file, target: :blank %>      
+      <% end %>
+      
+  </dd>
+</dl>

@@ -28,10 +28,11 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
+gem 'dotenv-rails', groups: [:development, :test]
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-end
+ end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
@@ -77,3 +78,9 @@ gem 'devise_invitable', '~> 2.0', '>= 2.0.1'
 gem 'httparty', '~> 0.18.0'
 # to create Representations of json
 gem 'representable', '~> 3.0', '>= 3.0.4'
+# connect with open weather
+gem 'open-weather', '~> 0.12.0'
+# country_info lookup
+gem 'countries', '~> 3.0', '>= 3.0.1', require: 'countries/global'
+# store assets on amazon s3
+gem 'aws-sdk-s3', '~> 1.61', '>= 1.61.2'

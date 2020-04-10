@@ -10,16 +10,89 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_29_223659) do
+ActiveRecord::Schema.define(version: 2020_04_10_164220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "announcements", force: :cascade do |t|
     t.datetime "published_at"
     t.string "announcement_type"
     t.string "name"
     t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "background_photos", force: :cascade do |t|
+    t.string "name"
+    t.text "source_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "city_id", null: false
+    t.index ["city_id"], name: "index_background_photos_on_city_id"
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name"
+    t.string "country"
+    t.float "lat"
+    t.float "lon"
+    t.integer "open_weather_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "address"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+  end
+
+  create_table "earthly_readings", force: :cascade do |t|
+    t.bigint "earthly_weather_station_id", null: false
+    t.bigint "city_id", null: false
+    t.string "temp"
+    t.string "feels_like"
+    t.string "temp_min"
+    t.string "temp_max"
+    t.string "pressure"
+    t.string "humidity"
+    t.string "wind_speed"
+    t.string "wind_deg"
+    t.integer "cloud_coverage_all"
+    t.integer "dt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "recorded_at"
+    t.index ["city_id"], name: "index_earthly_readings_on_city_id"
+    t.index ["earthly_weather_station_id"], name: "index_earthly_readings_on_earthly_weather_station_id"
+  end
+
+  create_table "earthly_weather_stations", force: :cascade do |t|
+    t.string "name"
+    t.string "country"
+    t.integer "open_weather_id"
+    t.decimal "lat", precision: 10, scale: 6
+    t.decimal "lon", precision: 10, scale: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -76,6 +149,14 @@ ActiveRecord::Schema.define(version: 2020_03_29_223659) do
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 
+  create_table "urban_images", force: :cascade do |t|
+    t.string "name"
+    t.bigint "city_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["city_id"], name: "index_urban_images_on_city_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -104,7 +185,12 @@ ActiveRecord::Schema.define(version: 2020_03_29_223659) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "background_photos", "cities"
+  add_foreign_key "earthly_readings", "cities"
+  add_foreign_key "earthly_readings", "earthly_weather_stations"
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "services", "users"
+  add_foreign_key "urban_images", "cities"
 end

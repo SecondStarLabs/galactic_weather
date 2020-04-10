@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  earthly_weather_station: one
+  city: one
+  temp: MyString
+  feels_like: MyString
+  temp_min: MyString
+  temp_max: MyString
+  pressure: MyString
+  humidity: MyString
+  wind_speed: MyString
+  wind_deg: MyString
+  cloud_coverage_all: 1
+  dt: 1
+
+two:
+  earthly_weather_station: two
+  city: two
+  temp: MyString
+  feels_like: MyString
+  temp_min: MyString
+  temp_max: MyString
+  pressure: MyString
+  humidity: MyString
+  wind_speed: MyString
+  wind_deg: MyString
+  cloud_coverage_all: 1
+  dt: 1
