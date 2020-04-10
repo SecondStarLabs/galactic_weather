@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_161742) do
+ActiveRecord::Schema.define(version: 2020_04_10_164220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,36 @@ ActiveRecord::Schema.define(version: 2020_04_09_161742) do
     t.string "address"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+  end
+
+  create_table "earthly_readings", force: :cascade do |t|
+    t.bigint "earthly_weather_station_id", null: false
+    t.bigint "city_id", null: false
+    t.string "temp"
+    t.string "feels_like"
+    t.string "temp_min"
+    t.string "temp_max"
+    t.string "pressure"
+    t.string "humidity"
+    t.string "wind_speed"
+    t.string "wind_deg"
+    t.integer "cloud_coverage_all"
+    t.integer "dt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "recorded_at"
+    t.index ["city_id"], name: "index_earthly_readings_on_city_id"
+    t.index ["earthly_weather_station_id"], name: "index_earthly_readings_on_earthly_weather_station_id"
+  end
+
+  create_table "earthly_weather_stations", force: :cascade do |t|
+    t.string "name"
+    t.string "country"
+    t.integer "open_weather_id"
+    t.decimal "lat", precision: 10, scale: 6
+    t.decimal "lon", precision: 10, scale: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -157,6 +187,8 @@ ActiveRecord::Schema.define(version: 2020_04_09_161742) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "background_photos", "cities"
+  add_foreign_key "earthly_readings", "cities"
+  add_foreign_key "earthly_readings", "earthly_weather_stations"
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "services", "users"

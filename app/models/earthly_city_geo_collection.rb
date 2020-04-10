@@ -7,7 +7,7 @@ class EarthlyCityGeoCollection
     end
     # locs = we.get_current_weather_for_cities_around_a_point(lat, lon, radius)
 
-    def discover_and_save_city_info
+    def discover_city_info
         we                  = WeatherEarthly.new
         current_readings    = we.get_current_weather_for_cities_around_a_point(lat, lon, radius)
         representations     = current_readings.fetch("list")
@@ -15,7 +15,7 @@ class EarthlyCityGeoCollection
     end
 
     def get_first_weather_station_in_listed_radius
-        station_collection = discover_and_save_city_info
-        first_city          = station_collection.first
+        station_collection = discover_city_info
+        first_city         = station_collection.first
     end
 end
