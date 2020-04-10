@@ -11,6 +11,7 @@ class CitiesController < ApplicationController
   # GET /cities/1
   # GET /cities/1.json
   def show
+    @latest_reading = @city.earthly_readings.last
   end
 
   # GET /cities/new
