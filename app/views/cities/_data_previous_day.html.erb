@@ -1,0 +1,18 @@
+      <div class="previous-day">
+        <h3 class="previous-day__sol">
+          <%= data_previous_day.recorded_at.strftime("%A") %>
+          <span data-sol></span>
+        </h3>
+        <p class="previous-day__date" data-date><%= data_previous_day.recorded_at.strftime("%b %d") %></p>
+        <p class="previous-day__temp">
+          High:
+          <span data-temp-high><%= data_previous_day.temp_max %></span>
+          °<span data-temp-unit></span>
+        </p>
+        <p class="previous-day__temp">
+          Low:
+          <span data-temp-low><%= data_previous_day.temp_min %></span>
+          °<span data-temp-unit></span>
+        </p>
+        <button class="previous-day__more-info" data-select-button>more info</button>
+      </div>
