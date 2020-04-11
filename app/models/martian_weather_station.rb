@@ -1,0 +1,2 @@
+class MartianWeatherStation < ApplicationRecord
+end

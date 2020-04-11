@@ -1,0 +1,49 @@
+
+
+
+<div class="row">
+  <div class="col-sm-6">
+    <h1>Martian_weather_stations</h1>
+  </div>
+
+  <div class="col-sm-6 text-right">
+  <%= link_to new_martian_weather_station_path, class: 'btn btn-primary' do %>
+    Add New Martian weather station
+  <% end %>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+    
+        <th>Name</th>
+    
+
+            <th>Latitude</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Longitude</th>
+            
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @martian_weather_stations.each do |martian_weather_station| %>
+        <%= content_tag :tr, id: dom_id(martian_weather_station), class: dom_class(martian_weather_station) do %>
+          
+            <td><%= link_to martian_weather_station.name, martian_weather_station %></td>
+          
+
+                      <td><%= martian_weather_station.latitude %></td>
+                      <td><%= martian_weather_station.latitude %></td>
+                      <td><%= martian_weather_station.longitude %></td>
+                      <td><%= martian_weather_station.longitude %></td>
+          
+          
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
