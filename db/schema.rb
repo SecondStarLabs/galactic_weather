@@ -45,15 +45,6 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "background_photos", force: :cascade do |t|
-    t.string "name"
-    t.text "source_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "city_id", null: false
-    t.index ["city_id"], name: "index_background_photos_on_city_id"
-  end
-
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.string "country"
@@ -70,14 +61,14 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
   create_table "earthly_readings", force: :cascade do |t|
     t.bigint "earthly_weather_station_id", null: false
     t.bigint "city_id", null: false
-    t.string "temp"
-    t.string "feels_like"
-    t.string "temp_min"
-    t.string "temp_max"
-    t.string "pressure"
-    t.string "humidity"
-    t.string "wind_speed"
-    t.string "wind_deg"
+    t.decimal "temp", precision: 10, scale: 6
+    t.decimal "feels_like", precision: 10, scale: 6
+    t.decimal "temp_min", precision: 10, scale: 6
+    t.decimal "temp_max", precision: 10, scale: 6
+    t.integer "pressure"
+    t.decimal "humidity", precision: 10, scale: 6
+    t.decimal "wind_speed", precision: 10, scale: 6
+    t.decimal "wind_deg", precision: 10, scale: 6
     t.integer "cloud_coverage_all"
     t.integer "dt"
     t.datetime "created_at", precision: 6, null: false
@@ -186,7 +177,6 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "background_photos", "cities"
   add_foreign_key "earthly_readings", "cities"
   add_foreign_key "earthly_readings", "earthly_weather_stations"
   add_foreign_key "project_users", "projects"
