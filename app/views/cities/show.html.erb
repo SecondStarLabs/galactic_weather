@@ -1,6 +1,20 @@
    <main class="mars-current-weather">
      <h1 class="main-title">Latest weather at <%= @city.name %></h1>
 
+      <div class="page-header">
+        <%= link_to cities_path, class: 'btn btn-default' do %>
+          All Cities
+        <% end %>
+
+        <% if user_signed_in? %>
+          <% if current_user.admin %>
+            <%= link_to edit_city_path(@city), class: 'btn btn-primary' do %>
+              Edit
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+
      <div class="date">
        <h2 class="section-title section-title--date">
          <%= @latest_reading.recorded_at.strftime("%A") %>
@@ -13,12 +27,12 @@
        <h2 class="section-title">Temperature</h2>
        <p class="reading">
          High:
-         <span data-current-temp-high></span>
+         <span data-current-temp-high><%= @latest_reading.temp_max %></span>
          °<span data-temp-unit></span>
         </p>
        <p class="reading">
          Low:
-         <span data-current-temp-low></span>
+         <span data-current-temp-low><%= @latest_reading.temp_min %></span>
          °<span data-temp-unit></span>
         </p>
      </div>
@@ -26,12 +40,12 @@
      <div class="wind">
        <h2 class="section-title">Wind</h2>
        <p class="reading">
-         <span data-wind-speed></span>
+         <span data-wind-speed><%= @latest_reading.wind_speed %></span>
          <span data-speed-unit></span>
         </p>
 
        <div class="wind__direction">
-         <p class="sr-only" data-wind-direction-text></p>
+         <p class="sr-only" data-wind-direction-text><%= @latest_reading.wind_deg %></p>
 
          <!-- update --direction custom prop
               to change arrow direction -->
@@ -65,61 +79,10 @@
 
      <div class="previous-days" data-previous-sols></div>
    </div>
+   <% if @latest_seven_readings.length >  2 %>
+       <%= render(partial: "data_previous_day", collection: @latest_seven_readings) %>
+   <% else %>
+       <%= render "data_previous_day_blank" %>
+   <% end %>
 
-   <template data-previous-sol-template>
-      <div class="previous-day">
-        <h3 class="previous-day__sol">
-          Sol
-          <span data-sol></span>
-        </h3>
-        <p class="previous-day__date" data-date></p>
-        <p class="previous-day__temp">
-          High:
-          <span data-temp-high></span>
-          °<span data-temp-unit></span>
-        </p>
-        <p class="previous-day__temp">
-          Low:
-          <span data-temp-low></span>
-          °<span data-temp-unit></span>
-        </p>
-        <button class="previous-day__more-info" data-select-button>more info</button>
-      </div>
-   </template>
     
-<div class="page-header">
-  <%= link_to cities_path, class: 'btn btn-default' do %>
-    All Cities
-  <% end %>
-  <%= link_to edit_city_path(@city), class: 'btn btn-primary' do %>
-    Edit
-  <% end %>
-  <h1>Show city</h1>
-</div>
-
-<dl class="dl-horizontal">
-  <dt>Name:</dt>
-  <dd><%= @city.name %></dd>
-
-  <dt>Country:</dt>
-  <dd><%= @city.country %></dd>
-
-  <dt>Lat:</dt>
-  <dd><%= @city.lat %></dd>
-
-  <dt>Lon:</dt>
-  <dd><%= @city.lon %></dd>
-
-  <dt>Open weather:</dt>
-  <dd><%= @city.open_weather_id %></dd>
-
-  <dt>Files:</dt>
-  <dd>
-      <%= link_to 'Urban Images', city_urban_images_path(@city) %>
-  
-  <% @city.files.each do  |file| %> 
-        <%= link_to file.filename, file, target: :blank %>      
-      <% end %>
-      
-  </dd>
-</dl>
