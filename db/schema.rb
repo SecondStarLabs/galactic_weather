@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_10_164220) do
+ActiveRecord::Schema.define(version: 2020_04_12_235046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,54 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "martian_places", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "recorded_on"
+  end
+
+  create_table "martian_readings", force: :cascade do |t|
+    t.bigint "martian_weather_station_id", null: false
+    t.decimal "temp", precision: 10, scale: 6
+    t.decimal "feels_like", precision: 10, scale: 6
+    t.decimal "temp_min", precision: 10, scale: 6
+    t.decimal "temp_max", precision: 10, scale: 6
+    t.integer "temp_sample_count"
+    t.decimal "wind_speed_av", precision: 10, scale: 6
+    t.integer "wind_speed_count"
+    t.decimal "wind_speed_min", precision: 10, scale: 6
+    t.decimal "wind_speed_max", precision: 10, scale: 6
+    t.decimal "wind_degrees", precision: 10, scale: 6
+    t.string "wind_compass_point"
+    t.decimal "wind_compass_right", precision: 10, scale: 6
+    t.decimal "wind_compass_up", precision: 10, scale: 6
+    t.integer "wind_direction_count"
+    t.string "season"
+    t.datetime "first_utc"
+    t.datetime "last_utc"
+    t.datetime "recorded_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "martian_place_id", null: false
+    t.integer "sol"
+    t.datetime "recorded_on"
+    t.index ["martian_place_id"], name: "index_martian_readings_on_martian_place_id"
+    t.index ["martian_weather_station_id"], name: "index_martian_readings_on_martian_weather_station_id"
+  end
+
+  create_table "martian_weather_stations", force: :cascade do |t|
+    t.string "name"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "data_connection"
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.bigint "recipient_id"
     t.bigint "actor_id"
@@ -179,6 +227,8 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "earthly_readings", "cities"
   add_foreign_key "earthly_readings", "earthly_weather_stations"
+  add_foreign_key "martian_readings", "martian_places"
+  add_foreign_key "martian_readings", "martian_weather_stations"
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "services", "users"

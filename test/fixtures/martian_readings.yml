@@ -1,0 +1,63 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  martian_weather_station: one
+  temp: 
+  temp: 
+  feels_like: 
+  feels_like: 
+  temp_min: 
+  temp_min: 
+  temp_max: 
+  temp_max: 
+  temp_sample_count: 1
+  wind_speed_av: 
+  wind_speed_av: 
+  wind_speed_count: 1
+  wind_speed_min: 
+  wind_speed_min: 
+  wind_speed_max: 
+  wind_speed_max: 
+  wind_degrees: 
+  wind_degrees: 
+  wind_compass_point: MyString
+  wind_compass_right: 
+  wind_compass_right: 
+  wind_compass_up: 
+  wind_compass_up: 
+  wind_direction_count: 1
+  season: MyString
+  first_utc: 2020-04-11 13:06:10
+  last_utc: 2020-04-11 13:06:10
+  recorded_at: 2020-04-11 13:06:10
+
+two:
+  martian_weather_station: two
+  temp: 
+  temp: 
+  feels_like: 
+  feels_like: 
+  temp_min: 
+  temp_min: 
+  temp_max: 
+  temp_max: 
+  temp_sample_count: 1
+  wind_speed_av: 
+  wind_speed_av: 
+  wind_speed_count: 1
+  wind_speed_min: 
+  wind_speed_min: 
+  wind_speed_max: 
+  wind_speed_max: 
+  wind_degrees: 
+  wind_degrees: 
+  wind_compass_point: MyString
+  wind_compass_right: 
+  wind_compass_right: 
+  wind_compass_up: 
+  wind_compass_up: 
+  wind_direction_count: 1
+  season: MyString
+  first_utc: 2020-04-11 13:06:10
+  last_utc: 2020-04-11 13:06:10
+  recorded_at: 2020-04-11 13:06:10
