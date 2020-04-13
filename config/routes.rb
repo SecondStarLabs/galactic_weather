@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :martian_places
   resources :martian_weather_stations
   resources :urban_images
   # resources :city_images

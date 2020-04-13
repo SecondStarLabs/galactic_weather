@@ -1,0 +1,24 @@
+<div class="page-header">
+  <%= link_to martian_places_path, class: 'btn btn-default' do %>
+    All Martian_places
+  <% end %>
+  <%= link_to edit_martian_place_path(@martian_place), class: 'btn btn-primary' do %>
+    Edit
+  <% end %>
+  <h1>Show martian_place</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= @martian_place.name %></dd>
+
+  <dt>Address:</dt>
+  <dd><%= @martian_place.address %></dd>
+
+  <dt>Latitude:</dt>
+  <dd><%= @martian_place.latitude %></dd>
+
+  <dt>Longitude:</dt>
+  <dd><%= @martian_place.longitude %></dd>
+
+</dl>

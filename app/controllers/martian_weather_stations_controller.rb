@@ -69,6 +69,6 @@ class MartianWeatherStationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def martian_weather_station_params
-      params.require(:martian_weather_station).permit(:name, :latitude, :latitude, :longitude, :longitude)
+      params.require(:martian_weather_station).permit(:name, :latitude, :latitude, :longitude, :longitude, :data_connection)
     end
 end

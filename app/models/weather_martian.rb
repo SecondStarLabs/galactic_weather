@@ -68,16 +68,18 @@ class WeatherMartian
             sol_representation = SolRepresenter.new(sol).from_json(insight_reading_to_json)
             # extract wind speed and direction
             wind_direction_hash = insight_reading_data.fetch("WD").fetch("most_common")
-            insight_reading_data.delete("WD")
+            # insight_reading_data.delete("WD")
             # add atomospheric readings as an OpenStruct, Sol, after converting from the current hash
             sol_obj = JSON.parse(insight_reading_data.to_json, object_class: Sol)
             pp "sol_obj are today #{sol_obj} "
 
             # add data sets to sol_representation
-            sol_representation.temperatures = sol_obj.AT
-            sol_representation.pressure     = sol_obj.PRE
-            sol_representation.wind_speed   = sol_obj.HWS
-            sol_representation.season       = sol_obj.Season
+            sol_representation.temperatures     = sol_obj.AT
+            sol_representation.pressure         = sol_obj.PRE
+            sol_representation.wind_speed       = sol_obj.HWS
+            sol_representation.season           = sol_obj.Season
+            # sol_representation.wind_direction   = sol_obj.WD
+            
             sol_representation.wind_direction   = Sol.new(wind_direction_hash) 
 
             # standardize the naming of attributes from the API
@@ -110,7 +112,7 @@ class WeatherMartian
             sol_representation.recorded_on              = sol_representation.last_utc
 
 
-
+            pp "====== sol_representation " + sol_representation.to_s
             sols_collection << sol_representation
         end
         sols_collection
@@ -138,7 +140,7 @@ class WeatherMartian
             sol_representation.temp_min                 = sol_representation.min_temp.to_d
             sol_representation.temp_max                 = sol_representation.max_temp.to_d
             # sol_representation.temp_sample_count        = nil
-            # sol_representation.wind_speed_av            = nil
+            sol_representation.wind_speed               = sol_representation.wind_speed.to_d
             # sol_representation.wind_speed_count         = nil
             # sol_representation.wind_speed_min           = nil
             # sol_representation.wind_speed_max           = nil
