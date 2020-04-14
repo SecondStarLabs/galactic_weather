@@ -1,5 +1,11 @@
    <main class="mars-current-weather">
-     <h1 class="main-title">Latest weather at <%= @city.name %></h1>
+     <h1 class="main-title">
+        Latest weather at <%= @city.name %>
+        <% unless @latest_reading %>
+          <br>
+          (no data available)
+        <% end %>
+     </h1>
 
       <div class="page-header">
         <%= link_to cities_path, class: 'btn btn-default' do %>
@@ -17,22 +23,46 @@
 
      <div class="date">
        <h2 class="section-title section-title--date">
-         <%= @latest_reading.recorded_at.strftime("%A") %>
+          
+          <% if @latest_reading %>
+            <%= @latest_reading.recorded_at.strftime("%A") %>
+         
+         <% end %>
+         
          <span data-current-sol></span>
         </h2>
-       <p class="date__day" data-current-date><%= @latest_reading.recorded_at.strftime("%b %d") %></p>
+       <p class="date__day" data-current-date>
+          <% if @latest_reading %>
+          
+          <%= @latest_reading.recorded_at.strftime("%b %d") %></p>
+          
+          <% end %>
+          
      </div>
 
      <div class="temp">
        <h2 class="section-title">Temperature</h2>
        <p class="reading">
          High:
-         <span data-current-temp-high><%= @latest_reading.temp_max %></span>
+         <span data-current-temp-high>
+          
+          <% if @latest_reading %>
+         <%= @latest_reading.temp_max %></span>
+         
+         <% end %>
+         
          °<span data-temp-unit></span>
         </p>
        <p class="reading">
          Low:
-         <span data-current-temp-low><%= @latest_reading.temp_min %></span>
+         <span data-current-temp-low>
+          <% if @latest_reading %>
+
+            <%= @latest_reading.temp_min %>
+            
+          <% end %>
+            
+         </span>
          °<span data-temp-unit></span>
         </p>
      </div>
@@ -40,12 +70,25 @@
      <div class="wind">
        <h2 class="section-title">Wind</h2>
        <p class="reading">
-         <span data-wind-speed><%= @latest_reading.wind_speed %></span>
+         <span data-wind-speed>
+          <% if @latest_reading %>
+         
+          <%= @latest_reading.wind_speed %>
+          
+          <% end %>
+          
+          </span>
          <span data-speed-unit></span>
         </p>
 
        <div class="wind__direction">
-         <p class="sr-only" data-wind-direction-text><%= @latest_reading.wind_deg %></p>
+         <p class="sr-only" data-wind-direction-text>
+          <% if @latest_reading %>
+          <%= @latest_reading.wind_deg %>
+          
+          <% end %>
+          
+        </p>
 
          <!-- update --direction custom prop
               to change arrow direction -->

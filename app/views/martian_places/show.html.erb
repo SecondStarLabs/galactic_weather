@@ -21,4 +21,13 @@
   <dt>Longitude:</dt>
   <dd><%= @martian_place.longitude %></dd>
 
+  <dt>Weather Stations:</dt>
+  <dd>
+    <ul>
+      <% @martian_place.martian_weather_stations.select(:id, :name).group(:id).each do |station|%>
+        <li><%= station.name %></li> 
+      <% end %>    
+    </ul>
+  </dd>
+
 </dl>
