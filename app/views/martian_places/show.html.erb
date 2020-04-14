@@ -23,9 +23,9 @@
 
      <div class="date">
        <h2 class="section-title section-title--date">
-          
+          Sol 
           <% if @latest_reading %>
-            <%= @latest_reading.recorded_on.strftime("%A") %>
+            <%= @latest_reading.sol %>
          
          <% end %>
          
@@ -47,7 +47,7 @@
          <span data-current-temp-high>
           
           <% if @latest_reading %>
-         <%= @latest_reading.temp_max %></span>
+         <%= @latest_reading.temp_max.to_i %></span>
          
          <% end %>
          
@@ -58,7 +58,7 @@
          <span data-current-temp-low>
           <% if @latest_reading %>
 
-            <%= @latest_reading.temp_min %>
+            <%= @latest_reading.temp_min.to_i %>
             
           <% end %>
             
@@ -73,7 +73,7 @@
          <span data-wind-speed>
           <% if @latest_reading %>
          
-          <%= @latest_reading.wind_speed_av %>
+          <%= @latest_reading.wind_speed_av.to_i %>
           
           <% end %>
           
@@ -120,12 +120,13 @@
 
      <h2 class="main-title previous-weather__title">Previous 7 days</h2> 
 
-     <div class="previous-days" data-previous-sols></div>
+     <div class="previous-days" data-previous-sols>
+        <% if @latest_seven_readings.length >  2 %>
+            <%= render(partial: "data_previous_day", collection: @latest_seven_readings) %>
+        <% else %>
+            <%= render "data_previous_day_blank" %>
+        <% end %>
+     </div>
    </div>
-   <% if @latest_seven_readings.length >  2 %>
-       <%= render(partial: "data_previous_day", collection: @latest_seven_readings) %>
-   <% else %>
-       <%= render "data_previous_day_blank" %>
-   <% end %>
 
     
