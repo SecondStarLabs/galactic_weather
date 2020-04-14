@@ -10,8 +10,8 @@ class MartianPlacesController < ApplicationController
   # GET /martian_places/1
   # GET /martian_places/1.json
   def show
-    @latest_seven_readings = @martian_place.martian_readings.last(7)
-    @latest_reading = @latest_seven_readings.first
+    @latest_seven_readings = @martian_place.martian_readings.order(:sol).last(7)
+    @latest_reading = @latest_seven_readings.last
   end
 
   # GET /martian_places/new
