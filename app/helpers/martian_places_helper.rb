@@ -1,0 +1,2 @@
+module MartianPlacesHelper
+end

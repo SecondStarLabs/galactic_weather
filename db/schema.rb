@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_10_164220) do
+ActiveRecord::Schema.define(version: 2020_04_12_235046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,15 +45,6 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "background_photos", force: :cascade do |t|
-    t.string "name"
-    t.text "source_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "city_id", null: false
-    t.index ["city_id"], name: "index_background_photos_on_city_id"
-  end
-
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.string "country"
@@ -70,14 +61,14 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
   create_table "earthly_readings", force: :cascade do |t|
     t.bigint "earthly_weather_station_id", null: false
     t.bigint "city_id", null: false
-    t.string "temp"
-    t.string "feels_like"
-    t.string "temp_min"
-    t.string "temp_max"
-    t.string "pressure"
-    t.string "humidity"
-    t.string "wind_speed"
-    t.string "wind_deg"
+    t.decimal "temp", precision: 10, scale: 6
+    t.decimal "feels_like", precision: 10, scale: 6
+    t.decimal "temp_min", precision: 10, scale: 6
+    t.decimal "temp_max", precision: 10, scale: 6
+    t.integer "pressure"
+    t.decimal "humidity", precision: 10, scale: 6
+    t.decimal "wind_speed", precision: 10, scale: 6
+    t.decimal "wind_deg", precision: 10, scale: 6
     t.integer "cloud_coverage_all"
     t.integer "dt"
     t.datetime "created_at", precision: 6, null: false
@@ -106,6 +97,54 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "martian_places", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "recorded_on"
+  end
+
+  create_table "martian_readings", force: :cascade do |t|
+    t.bigint "martian_weather_station_id", null: false
+    t.decimal "temp", precision: 10, scale: 6
+    t.decimal "feels_like", precision: 10, scale: 6
+    t.decimal "temp_min", precision: 10, scale: 6
+    t.decimal "temp_max", precision: 10, scale: 6
+    t.integer "temp_sample_count"
+    t.decimal "wind_speed_av", precision: 10, scale: 6
+    t.integer "wind_speed_count"
+    t.decimal "wind_speed_min", precision: 10, scale: 6
+    t.decimal "wind_speed_max", precision: 10, scale: 6
+    t.decimal "wind_degrees", precision: 10, scale: 6
+    t.string "wind_compass_point"
+    t.decimal "wind_compass_right", precision: 10, scale: 6
+    t.decimal "wind_compass_up", precision: 10, scale: 6
+    t.integer "wind_direction_count"
+    t.string "season"
+    t.datetime "first_utc"
+    t.datetime "last_utc"
+    t.datetime "recorded_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "martian_place_id", null: false
+    t.integer "sol"
+    t.datetime "recorded_on"
+    t.index ["martian_place_id"], name: "index_martian_readings_on_martian_place_id"
+    t.index ["martian_weather_station_id"], name: "index_martian_readings_on_martian_weather_station_id"
+  end
+
+  create_table "martian_weather_stations", force: :cascade do |t|
+    t.string "name"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "data_connection"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -186,9 +225,10 @@ ActiveRecord::Schema.define(version: 2020_04_10_164220) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "background_photos", "cities"
   add_foreign_key "earthly_readings", "cities"
   add_foreign_key "earthly_readings", "earthly_weather_stations"
+  add_foreign_key "martian_readings", "martian_places"
+  add_foreign_key "martian_readings", "martian_weather_stations"
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "services", "users"

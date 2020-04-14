@@ -1,0 +1,59 @@
+<%= form_with(model: martian_place, local: true) do |form| %>
+  <% if martian_place.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(martian_place.errors.count, "error") %> prohibited this martian_place from being saved:</h2>
+
+      <ul>
+      <% martian_place.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :address %>
+    <%= form.text_field :address, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :latitude %>
+    <%= form.text_field :latitude, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :longitude %>
+    <%= form.text_field :longitude, class: 'form-control' %>
+  </div>
+
+  <%= link_to 'Add Weather Station', new_martian_weather_station_path, target: :blank %>
+  <div class="form-group">
+    <%= form.label :martian_weather_station %>
+    <%= form.collection_select(:martian_weather_station_id, 
+      MartianWeatherStation.all, 
+      :id, 
+      :name,
+      prompt: 'Select Weather Station') %>
+  </div>
+
+  <div class="form-group">
+    <% if martian_place.persisted? %>
+      <div class="float-right">
+        <%= link_to 'Destroy', martian_place, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+
+    <%= form.submit class: 'btn btn-primary' %>
+
+    <% if martian_place.persisted? %>
+      <%= link_to "Cancel", martian_place, class: "btn btn-link" %>
+    <% else %>
+      <%= link_to "Cancel", martian_places_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+<% end %>
