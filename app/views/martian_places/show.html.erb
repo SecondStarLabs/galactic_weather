@@ -1,6 +1,21 @@
    <main class="mars-current-weather">
      <h1 class="main-title">
-        Latest weather at <%= @martian_place.name %>
+        Latest weather at <%= @martian_place.name %>  
+        <% if user_signed_in? %>
+          <% if current_user.admin %>
+            <div>
+              <%= link_to martian_places_path, class: 'btn btn-primary' do %>
+                All Martian Places
+              <% end %>            
+            </div>
+            <span>
+              <%= link_to edit_martian_place_path(@martian_place), class: 'btn btn-primary' do %>
+                Edit
+              <% end %>            
+            </span>
+          <% end %>
+        <% end %>
+
         <% unless @latest_reading %>
           <br>
           (no data available)
@@ -8,36 +23,23 @@
      </h1>
 
       <div class="page-header">
-        <%= link_to martian_places_path, class: 'btn btn-default' do %>
-          All Martian Places
-        <% end %>
 
-        <% if user_signed_in? %>
-          <% if current_user.admin %>
-            <%= link_to edit_martian_place_path(@martian_place), class: 'btn btn-primary' do %>
-              Edit
-            <% end %>
-          <% end %>
-        <% end %>
       </div>
 
      <div class="date">
        <h2 class="section-title section-title--date">
           Sol 
-          <% if @latest_reading %>
-            <%= @latest_reading.sol %>
-         
-         <% end %>
-         
-         <span data-current-sol></span>
+          <span data-current-sol>
+            <% if @latest_reading %>
+              <%= @latest_reading.sol %>         
+            <% end %>         
+         </span>
         </h2>
        <p class="date__day" data-current-date>
           <% if @latest_reading %>
-          
-          <%= @latest_reading.recorded_on.strftime("%b %d") %></p>
-          
+            <%= "#{time_ago_in_words(@latest_reading.recorded_on)} ago"  %>
           <% end %>
-          
+        </p>
      </div>
 
      <div class="temp">
@@ -45,24 +47,20 @@
        <p class="reading">
          High:
          <span data-current-temp-high>
-          
-          <% if @latest_reading %>
-         <%= @latest_reading.temp_max.to_i %></span>
-         
-         <% end %>
+            <% if @latest_reading %>
+              <%= @latest_reading.temp_max.round %>
+            <% end %>
+          </span>
          
          °<span data-temp-unit></span>
         </p>
        <p class="reading">
          Low:
          <span data-current-temp-low>
-          <% if @latest_reading %>
-
-            <%= @latest_reading.temp_min.to_i %>
-            
-          <% end %>
-            
-         </span>
+            <% if @latest_reading %>
+              <%= @latest_reading.temp_min.round %>
+            <% end %>
+          </span>
          °<span data-temp-unit></span>
         </p>
      </div>
@@ -71,12 +69,9 @@
        <h2 class="section-title">Wind</h2>
        <p class="reading">
          <span data-wind-speed>
-          <% if @latest_reading %>
-         
-          <%= @latest_reading.wind_speed_av.to_i %>
-          
-          <% end %>
-          
+            <% if @latest_reading %>
+              <%= @latest_reading.wind_speed_av || "--" %>          
+            <% end %>
           </span>
          <span data-speed-unit></span>
         </p>
@@ -84,10 +79,8 @@
        <div class="wind__direction">
          <p class="sr-only" data-wind-direction-text>
           <% if @latest_reading %>
-          <%= @latest_reading.wind_degrees %>
-          
+            <%= @latest_reading.wind_degrees %>
           <% end %>
-          
         </p>
 
          <!-- update --direction custom prop
@@ -113,14 +106,14 @@
 
    </main>
 
-   <div class="previous-weather">
+   <div class="previous-weather" data-readings="<%= @latest_seven_readings.to_json %>">
      <!-- When clicked, toggle '.show-weather'
      to .previous-weather div -->
      <button for="weather-toggle" class="show-previous-weather"><span>&#8593;</span> <span class="sr-only">Show previous weather</span></button>
 
      <h2 class="main-title previous-weather__title">Previous 7 days</h2> 
 
-     <div class="previous-days" data-previous-sols>
+     <div class="previous-days" data-previous-sols >
         <% if @latest_seven_readings.length >  2 %>
             <%= render(partial: "data_previous_day", collection: @latest_seven_readings) %>
         <% else %>
@@ -129,12 +122,21 @@
      </div>
    </div>
 
+
+
+
+    
+
 <script>
+const API_KEY = 'DEMO_KEY'
+const API_URL = `https://api.nasa.gov/insight_weather/?api_key=${API_KEY}&feedtype=json&ver=1.0`
 
-const previousWeatherToggle = document.querySelector(".show-previous-weather");
-const previousWeather = document.querySelector(".previous-weather");
+const previousWeatherToggle = document.querySelector('.show-previous-weather');
+const previousWeather = document.querySelector('.previous-weather')
 
-previousWeatherToggle.addEventListener("click", () => {
-  previousWeather.classList.toggle("show-weather");
-});
+
+previousWeatherToggle.addEventListener('click', () => {
+	previousWeather.classList.toggle('show-weather')
+})
+
 </script>    
