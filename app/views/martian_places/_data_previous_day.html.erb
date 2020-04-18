@@ -24,23 +24,16 @@
         <button id="<%= "#{data_previous_day.recorded_on.to_formatted_s(:number)}" %>"
                 onClick="displaySelectedSol(this.id)"
                 data-reading='{
-                  "sol"                 : "<%= data_previous_day.sol %>",
-                  "recorded-on"         : "<%= "#{time_ago_in_words(data_previous_day.recorded_on)} ago" %>",
-                  "temp-high"           : <%= data_previous_day.temp_max %>,
-                  "temp-low"            : <%= data_previous_day.temp_min %>,
-                  "wind-degrees"        : "<%= data_previous_day.wind_degrees %>",
-                  "wind-speed"          : <%= data_previous_day.wind_speed_av %>,
-                  "wind-direction-text"  : "<%= data_previous_day.wind_compass_point %>"      
+                  "sol"                   : "<%= data_previous_day.sol %>",
+                  "recorded-on"           : "<%= "#{time_ago_in_words(data_previous_day.recorded_on)} ago" %>",
+                  "temp-high"             : <%= data_previous_day.temp_max %>,
+                  "temp-low"              : <%= data_previous_day.temp_min %>,
+                  "wind-degrees"          : "<%= data_previous_day.wind_degrees.to_i %>",
+                  "wind-speed"            : <%= data_previous_day.wind_speed_av.to_i %>,
+                  "wind-direction-text"   : "<%= data_previous_day.wind_compass_point || "--" %>"      
                 }'
           class="previous-day__more-info" 
           data-select-button
-          data-sol                  = "<%= data_previous_day.sol %>"
-          data-recorded-on          = "<%= "#{time_ago_in_words(data_previous_day.recorded_on)} ago" %>"
-          data-temp-max             = "<%= data_previous_day.temp_max %>"
-          data-temp-min             = "<%= data_previous_day.temp_min %>"      
-          data-wind-speed           = "<%= data_previous_day.wind_speed_av %>"      
-          data-wind-degrees         = "<%= data_previous_day.wind_degrees %>"      
-          data-wind-direction-text  = "<%= data_previous_day.wind_compass_point %>"      
         >
           more info
         </button>
