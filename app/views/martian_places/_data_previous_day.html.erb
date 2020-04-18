@@ -8,15 +8,14 @@
         <p class="previous-day__date" data-date><%= "#{time_ago_in_words(data_previous_day.recorded_on)} ago"  %></p>
         <p class="previous-day__temp">
           High:
-          <span data-temp-high 
-                data-temp-max="<%= data_previous_day.temp_max %>" >
+          <span data-temp-high="<%= data_previous_day.temp_max %>" >
                 <%= data_previous_day.temp_max.round %>
           </span>
           °<span data-temp-unit></span>
         </p>
         <p class="previous-day__temp">
           Low:
-          <span data-temp-low >
+          <span data-temp-low="<%= data_previous_day.temp_min %>" >
             <%= data_previous_day.temp_min.round %>
           </span>
           °<span data-temp-unit></span>

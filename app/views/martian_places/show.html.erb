@@ -156,6 +156,7 @@ const latestSolId               = previousSols[previousSols.length-1].id
 
   updateUnits()
   displaySelectedSol(selectedSolId)
+  displayPreviousTemperatures()
 
   // displaySelectedSol(latestSolIndex)
   // getWeather()
@@ -174,25 +175,36 @@ const latestSolId               = previousSols[previousSols.length-1].id
 		imperialRadio.checked = !metricUnits
 		updateUnits()
 		displaySelectedSol(selectedSolId)
+    displayPreviousTemperatures()
 		// displayPreviousSols(sols)
 	})
 
 	metricRadio.addEventListener('change', () => {
 		updateUnits()
 		displaySelectedSol(selectedSolId)
+    displayPreviousTemperatures()
 		// displayPreviousSols(sols)
 	})
 
 	imperialRadio.addEventListener('change', () => {
 		updateUnits()
 		displaySelectedSol(selectedSolId)
+    displayPreviousTemperatures()
 		// displayPreviousSols(sols)
 	})
 
   windDirectionArrow.style.setProperty('--direction', `<%= @latest_reading.wind_degrees %>deg`)
 
-  function displayTemperature(temperature) {
-    
+  function displayPreviousTemperatures() {
+    highTemps = document.querySelectorAll("span[data-temp-high]")
+    lowTemps  = document.querySelectorAll("span[data-temp-low]")
+
+    for (i = 0; i < highTemps.length; ++i) {
+      highTemps[i].innerText = displayTemperature(highTemps[i]['dataset']['tempHigh']);
+    } 
+    for (i = 0; i < lowTemps.length; ++i) {
+      lowTemps[i].innerText = displayTemperature(lowTemps[i]['dataset']['tempLow']);
+    } 
   }
 
   function displaySelectedSol(sol_id) {
