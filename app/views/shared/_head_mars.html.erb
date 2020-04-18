@@ -7,5 +7,5 @@
 
 <%= stylesheet_link_tag 'mars', media: 'all', 'data-turbolinks-track': 'reload' %>
 <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-<%= javascript_pack_tag 'mars', 'data-turbolinks-track': 'reload' %>
+<%#= javascript_pack_tag 'mars', 'data-turbolinks-track': 'reload' %>
 <script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google_maps_api_key %>&libraries=places&callback=initMap" async defer data-turbolinks-eval="false"></script>

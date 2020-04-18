@@ -10,8 +10,20 @@ class MartianPlacesController < ApplicationController
   # GET /martian_places/1
   # GET /martian_places/1.json
   def show
-    @latest_seven_readings = @martian_place.martian_readings.order(:sol).last(7)
-    @latest_reading = @latest_seven_readings.last
+    # @latest_seven_readings      = @martian_place.martian_readings.order(:sol).last(7)
+    @latest_seven_readings = @martian_place.martian_readings.order(:sol)
+                            .select(:sol, 
+                                    :temp, 
+                                    :temp_min, 
+                                    :temp_max, 
+                                    :wind_speed_av, 
+                                    :wind_degrees, 
+                                    :wind_compass_point, 
+                                    :season, 
+                                    :recorded_on
+                            )
+                            .last(7)
+    @latest_reading             = @latest_seven_readings.last
   end
 
   # GET /martian_places/new
