@@ -25,7 +25,9 @@ class UpdateCityWeatherStationIdPlusLatAndLonJob < ApplicationJob
     reading = EarthlyReading.where(earthly_weather_station: ews).first_or_initialize
 
     # test if this is a new record
-    if reading.city_id.to_i == 0
+    # dt is a kind of timestamp
+    # so check to see if the dt is different
+    if reading.dt != weather_station.dt
       reading.city                        = @city
       reading.temp                        = weather_station.main.temp.to_d
       reading.feels_like                  = weather_station.main.feels_like.to_d
