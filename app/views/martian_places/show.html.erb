@@ -1,6 +1,6 @@
    <main class="mars-current-weather">
      <h1 class="main-title">
-        Latest weather at <%= @martian_place.name %>  
+        Latest at <%= @martian_place.name %>  
         <% if user_signed_in? %>
           <% if current_user.admin %>
             <div>
@@ -90,9 +90,15 @@
      </div> 
 
      <div class="info">
-      <p>InSight is taking daily weather measurements (temperature, wind, pressure) on the surface of Mars at Elysium Planitia, a flat, smooth plain near Mars’ equator.</p>
-      <p>This is only a part of InSight’s mission. <a href="https://mars.nasa.gov/insight/mission/overview/">Click here</a> to find out more.</p>
-      <p>&#42; Any reading that is due north and the speed of zero had no wind reading for that day.</p>
+      <p>
+        &#42; Due North &amp; 0 speed readings indicates no wind reading for that day.
+      </p>
+      <p>Collecting weather on the surface of Mars at <%= @martian_place.name %> 
+          is only part of <%= @martian_place.martian_weather_stations.first.name %>'s mission. 
+          <a href="https://mars.nasa.gov/insight/mission/overview/" target="_blank">Click here</a> 
+          <a href="https://www.jpl.nasa.gov/missions/mars-science-laboratory-curiosity-rover-msl/">or here</a>
+          to find out more.
+      </p>
      </div>
 
      <div class="unit">
@@ -110,8 +116,10 @@
    <div class="previous-weather" data-readings="<%= @latest_seven_readings.to_json %>">
      <!-- When clicked, toggle '.show-weather'
      to .previous-weather div -->
-     <button for="weather-toggle" class="show-previous-weather"><span>&#8593;</span> <span class="sr-only">Show previous weather</span></button>
-
+     <div class="previous-weather-button">
+      <button for="weather-toggle" class="show-previous-weather"><span>&#8593;</span> <span class="sr-only">Show previous weather</span></button>
+     </div>
+     
      <h2 class="main-title previous-weather__title">Previous 7 days</h2> 
 
      <div class="previous-days" data-previous-sols >

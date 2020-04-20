@@ -315,7 +315,7 @@ a {
 }
 
 .previous-day {
-  opacity: 0;
+  opacity: 1;
 
   & > * {
     margin: 0;
@@ -394,6 +394,32 @@ a {
   }
 }
 
+//  // start mobility mods
+.previous-weather {
+  padding: 0rem 3rem 0rem 3rem;
+}
+
+// start swap display visibility
+.previous-weather-button {
+  display: none;
+}
+.previous-day__sol {
+  display: none;
+}
+.previous-day__date {
+  display: none;
+}
+.previous-day__temp {
+  display: none;
+}
+.previous-day__more-info__text {
+  display: none;
+}
+.previous-day__more-info__text-dot {
+  display: inline;
+}
+//  // finish swap display visibility
+
 @media (min-width: 600px) {
   .mars-current-weather {
     display: grid;
@@ -467,4 +493,63 @@ a {
   .info {
     grid-column: 1 / 3;
   }
+
+  //  // start mobile mods
+  .previous-weather {
+    padding: 3rem;
+  }
+
+  .previous-day {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    opacity: 1;
+
+    .previous-day__sol {
+      grid-area: 1 / 1 / 2 / 2;
+    }
+    .previous-day__date {
+      grid-area: 2 / 1 / 3 / 2;
+    }
+    .previous-day__temp .lowhigh {
+      grid-area: 3 / 1 / 4 / 2;
+    }
+    .previous-day__temp .low {
+      grid-area: 4 / 1 / 5 / 2;
+    }
+    .previous-day__more-info__text {
+      grid-area: 5 / 1 / 6 / 2;
+    }
+  }
+  // start swap display visibility
+  .previous-day {
+    opacity: 0;
+  }
+  .previous-weather-button {
+    display: inline;
+  }
+
+  .previous-day__sol {
+    display: inline;
+  }
+
+  .previous-day__date {
+    display: inline;
+  }
+
+  .previous-day__temp {
+    display: inline;
+  }
+
+  .previous-day__more-info__text {
+    display: inline;
+  }
+
+  .previous-day__more-info__text-dot {
+    display: none;
+  }
+  // finish swap display visibility
+  //  // finish mobile mods
 }

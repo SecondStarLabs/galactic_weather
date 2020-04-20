@@ -6,14 +6,14 @@
           </span>
         </h3>
         <p class="previous-day__date" data-date><%= "#{time_ago_in_words(data_previous_day.recorded_on)} ago"  %></p>
-        <p class="previous-day__temp">
+        <p class="previous-day__temp high">
           High:
           <span data-temp-high="<%= data_previous_day.temp_max %>" >
                 <%= data_previous_day.temp_max.round %>
           </span>
           °<span data-temp-unit></span>
         </p>
-        <p class="previous-day__temp">
+        <p class="previous-day__temp low">
           Low:
           <span data-temp-low="<%= data_previous_day.temp_min %>" >
             <%= data_previous_day.temp_min.round %>
@@ -21,6 +21,7 @@
           °<span data-temp-unit></span>
         </p>
         <button id="<%= "#{data_previous_day.recorded_on.to_formatted_s(:number)}" %>"
+                name="more-info"
                 onClick="displaySelectedSol(this.id)"
                 data-reading='{
                   "sol"                   : "<%= data_previous_day.sol %>",
@@ -34,6 +35,7 @@
           class="previous-day__more-info" 
           data-select-button
         >
-          more info
+        <span class="previous-day__more-info__text">more info</span>
+        <span class="previous-day__more-info__text-dot">&nbsp;</span>
         </button>
       </div>
