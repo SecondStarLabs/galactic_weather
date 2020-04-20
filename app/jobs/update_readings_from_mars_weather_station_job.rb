@@ -29,7 +29,7 @@ class UpdateReadingsFromMarsWeatherStationJob < ApplicationJob
       martian_reading =  weather_station.martian_readings.where(sol: reading.sol).first_or_initialize
       # test: if this is a new record,
       # then the reading with a record of the place, weather station and the sol haven't been recorded yet
-      if martian_reading.martian_place_id.to_i == 0
+      if @martian_place.martian_readings.where(sol: martian_reading.sol.to_i).length == 0
 
 
             martian_reading.sol                   = reading.sol                   
