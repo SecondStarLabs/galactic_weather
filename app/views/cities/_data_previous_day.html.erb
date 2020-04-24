@@ -23,8 +23,8 @@
                 onClick="displaySelectedSol(this.id)"
                 data-reading='{
                   "recorded-at"           : "<%= "#{time_ago_in_words(data_previous_day.recorded_at)} ago" %>",
-                  "temp-high"             : <%= data_previous_day.temp_max %>,
-                  "temp-low"              : <%= data_previous_day.temp_min %>,
+                  "temp-high"             : <%= data_previous_day.temp_max.to_i %>,
+                  "temp-low"              : <%= data_previous_day.temp_min.to_i %>,
                   "wind-degrees"          : "<%= data_previous_day.wind_deg.to_i %>",
                   "wind-speed"            : <%= data_previous_day.wind_speed.to_i %>,
                   "wind-direction-text"   : "<%=  "--" %>"      
