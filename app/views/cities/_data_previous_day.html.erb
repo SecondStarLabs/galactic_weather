@@ -1,18 +1,38 @@
-      <div class="previous-day">
+      <div class="previous-day" >
         <h3 class="previous-day__sol">
           <%= data_previous_day.recorded_at.strftime("%A") %>
           <span data-sol></span>
         </h3>
-        <p class="previous-day__date" data-date><%= data_previous_day.recorded_at.strftime("%b %d") %></p>
-        <p class="previous-day__temp">
+        <p class="previous-day__date" data-date><%= data_previous_day.recorded_at.strftime("%B %d") %></p>
+        <p class="previous-day__temp high">
           High:
-          <span data-temp-high><%= data_previous_day.temp_max %></span>
+          <span data-temp-high="<%= data_previous_day.temp_max %>" >
+                <%= data_previous_day.temp_max.round %>
+          </span>
           °<span data-temp-unit></span>
         </p>
-        <p class="previous-day__temp">
+        <p class="previous-day__temp low">
           Low:
-          <span data-temp-low><%= data_previous_day.temp_min %></span>
+          <span data-temp-low="<%= data_previous_day.temp_min %>" >
+            <%= data_previous_day.temp_min.round %>
+          </span>
           °<span data-temp-unit></span>
         </p>
-        <button class="previous-day__more-info" data-select-button>more info</button>
+        <button id="<%= "#{data_previous_day.recorded_at.to_formatted_s(:number)}" %>"
+                name="more-info"
+                onClick="displaySelectedSol(this.id)"
+                data-reading='{
+                  "recorded-at"           : "<%= "#{time_ago_in_words(data_previous_day.recorded_at)} ago" %>",
+                  "temp-high"             : <%= data_previous_day.temp_max %>,
+                  "temp-low"              : <%= data_previous_day.temp_min %>,
+                  "wind-degrees"          : "<%= data_previous_day.wind_deg.to_i %>",
+                  "wind-speed"            : <%= data_previous_day.wind_speed.to_i %>,
+                  "wind-direction-text"   : "<%=  "--" %>"      
+                }'
+          class="previous-day__more-info" 
+          data-select-button
+        >
+        <span class="previous-day__more-info__text">more info</span>
+        <span class="previous-day__more-info__text-dot">&nbsp;</span>
+        </button>
       </div>

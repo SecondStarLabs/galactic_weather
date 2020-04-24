@@ -1,20 +1,40 @@
-<div class="previous-day">
-  <h3 class="previous-day__sol">
-    Not Avaliable
-    <span data-sol></span>
-  </h3>
-  <p class="previous-day__date" data-date>
-    N/A
-  </p>
-  <p class="previous-day__temp">
-    High:
-    <span data-temp-high>n/z</span>
-    °<span data-temp-unit></span>
-  </p>
-  <p class="previous-day__temp">
-    Low:
-    <span data-temp-low>n/a</span>
-    °<span data-temp-unit></span>
-  </p>
-  <button class="previous-day__more-info" data-select-button>more info</button>
-</div>
+      <div class="previous-day" >
+        <h3 class="previous-day__sol">
+          Sol
+          <span data-sol>
+            N/A
+          </span>
+        </h3>
+        <p class="previous-day__date" data-date><%#= "#{time_ago_in_words(data_previous_day.recorded_at)} ago"  %></p>
+        <p class="previous-day__temp high">
+          High:
+          <span data-temp-high="<%#= data_previous_day.temp_max %>" >
+                <%#= data_previous_day.temp_max.round %>
+          </span>
+          °<span data-temp-unit></span>
+        </p>
+        <p class="previous-day__temp low">
+          Low:
+          <span data-temp-low="<%#= data_previous_day.temp_min %>" >
+            <%#= data_previous_day.temp_min.round %>
+          </span>
+          °<span data-temp-unit></span>
+        </p>
+        <button id="<%#= "#{data_previous_day.recorded_on.to_formatted_s(:number)}" %>"
+                name="more-info"
+                onClick="displaySelectedSol(this.id)"
+                data-reading='{
+                  "recorded-on"           : "<%#= "#{time_ago_in_words(data_previous_day.recorded_on)} ago" %>",
+                  "temp-high"             : <%#= data_previous_day.temp_max %>,
+                  "temp-low"              : <%#= data_previous_day.temp_min %>,
+                  "wind-degrees"          : "<%#= data_previous_day.wind_degrees.to_i %>",
+                  "wind-speed"            : <%#= data_previous_day.wind_speed_av.to_i %>,
+                  "wind-direction-text"   : "<%#s= data_previous_day.wind_compass_point || "--" %>"      
+                }'
+          class="previous-day__more-info" 
+          data-select-button
+        >
+        <span class="previous-day__more-info__text">more info</span>
+        <span class="previous-day__more-info__text-dot">&nbsp;</span>
+        </button>
+      </div>

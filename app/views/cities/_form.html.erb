@@ -1,3 +1,28 @@
+<style>
+  form  {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+
+  .error_explanation { grid-area: 1 / 1 / 2 / 2; }
+  .text-entry { grid-area: 2 / 1 / 4 / 2; }
+  .take-action { grid-area: 4 / 1 / 5 / 3; }
+  .map-area { grid-area: 1 / 2 / 4 / 3; }
+
+  form .form-group {
+    background-color: purple;
+
+  }
+
+  form .p-4 {
+    background-color: green;
+  }
+
+</style>
+
 <%= form_with(model: city, 
       local: true, 
       data: {controller: "places", 
@@ -6,8 +31,11 @@
         places_longitude: city.longitude
         }
       ) do |form| %>
+  <div class="text-entry">
+
   <% if city.errors.any? %>
     <div id="error_explanation">
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non illo quibusdam soluta? Recusandae vitae consequuntur perferendis, distinctio repudiandae amet fugiat omnis cumque? Esse a quasi nam. Ducimus earum quibusdam eveniet.</p>
       <h2><%= pluralize(city.errors.count, "error") %> prohibited this city from being saved:</h2>
 
       <ul>
@@ -17,45 +45,47 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="form-group">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :country %>
-    <%= form.text_field :country, class: 'form-control' %>
-  </div>
-
-      <div class="form-group">
-        <%= form.label :address %>
-        <%= form.search_field :address, class: 'form-control', data: { target: "places.field", action: "keydown->places#keydown" }%>
-      </div>
-
-      <div class="form-group">
-        <%= form.label :latitude %>
-        <%= form.text_field :latitude, class: 'form-control', data: { target: "places.latitude" } %>
-      </div>
-
-      <div class="form-group">
-        <%= form.label :longitude %>
-        <%= form.text_field :longitude, class: 'form-control', data: { target: "places.longitude" } %>
-      </div>
-
-
-    <div class="p-4">
-      <div data-target="places.map" style="height:400px;width:400px"></div>
+    <div class="form-group address">
+      <%= form.label :address %>
+      <%= form.search_field :address, class: 'form-control', data: { target: "places.field", action: "keydown->places#keydown" }%>
     </div>
 
-  <div class="form-group">
+    <div class="form-group name">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group country">
+      <%= form.label :country %>
+      <%= form.text_field :country, class: 'form-control' %>
+    </div>
+
+
+  </div>
+  
+
+  <div class="p-4 map-area">
+    <div data-target="places.map" style="height:400px;width:400px"></div>
+        <div class="form-group latitude">
+      <%= form.label :latitude %>
+      <%= form.text_field :latitude, class: 'form-control', data: { target: "places.latitude" } %>
+    </div>
+
+    <div class="form-group longitude">
+      <%= form.label :longitude %>
+      <%= form.text_field :longitude, class: 'form-control', data: { target: "places.longitude" } %>
+    </div>
+
+  </div>
+
+  <div class="form-group take-action">
     <% if city.persisted? %>
       <div class="float-right">
         <%= link_to 'Destroy', city, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
       </div>
     <% end %>
 
-    <%= form.submit class: 'btn btn-primary' %>
+    <%= form.submit class: 'btn btn-primary', :disable_with => "Please Wait..." %>
 
     <% if city.persisted? %>
       <%= link_to "Cancel", city, class: "btn btn-link" %>
