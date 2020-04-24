@@ -55,7 +55,7 @@ class WeatherEarthly
         day_representation = EarthlyRepresenter.new(day).from_json(day_reading_to_json)
     end
 
-    def collect_all_current_readings
+    def collect_all_current_reports
         collected_open_weather_ids  = EarthlyWeatherStation.all
                                     .collect {|earthly_weather_station|  earthly_weather_station.open_weather_id }
         current_readings            = self.get_current_weather_for_a_list_of_open_weather_ids(collected_open_weather_ids)
@@ -64,33 +64,44 @@ class WeatherEarthly
 
     end
 
-    def save_all_current_readings
-        all_current_readings = WeatherEarthly.new.collect_all_current_readings
-        all_current_readings.each do |weather_station|
-            ews     = EarthlyWeatherStation.find_by!("open_weather_id = ?", weather_station.id)
-            city    = ews.cities.first
+    def collect_and_save_all_latest_reports
+        latest_reports = WeatherEarthly.new.collect_all_current_reports
 
-            reading = city.earthly_readings.new(earthly_weather_station: ews)
-            # reading.temp = weather_station.main.temp.to_d
-            # reading.feels_like = weather_station.main.feels_like.to_d
-            # reading.temp_min = weather_station.main.temp_min.to_d
-            # reading.temp_max = weather_station.main.temp_max.to_d
-            # reading.pressure = weather_station.main.pressure
-            # reading.humidity = weather_station.main.humidity.to_d
-            # reading.wind_speed = weather_station.wind.speed.to_d
-            # reading.wind_deg = weather_station.wind.deg.to_d
-            # reading.cloud_coverage_all = weather_station.clouds.all
-            # reading.dt = weather_station.dt
-            reading.recorded_at = Time.at(weather_station.dt)
+        # collect the pertinent attributes of earthly_readings and group them to avoid dupes
+        old_readings = EarthlyReading.select(:id, :city_id, :earthly_weather_station_id).group(:city_id, :earthly_weather_station_id, :id)
+        # add the OpenWeather station ID and convert to OpenStruct while we are at it
+        improved_readings = old_readings.all.collect {
+            |reading| OpenStruct.new(
+                {city_id: reading.city_id, 
+                    earthly_weather_station_id: reading.earthly_weather_station_id, 
+                    open_weather_id: EarthlyWeatherStation.find(reading.earthly_weather_station_id).open_weather_id
+                }
+            )
+        }
 
-            # guard for saving an invalid record with nil attributes
-            if reading.recorded_at.to_s.length > 0
-                reading.save!
+        improved_readings.each do |reading|
+            # select the matching report for the reading
+            latest  = latest_reports.find {|lr| lr.id == reading.open_weather_id}
+
+            city    = City.find(reading.city_id)
+            # only record the report if it is later than what is currently recorded
+            if latest.dt > city.earthly_readings.last.dt 
+                ews     = EarthlyWeatherStation.find(reading.earthly_weather_station_id)
+
+                new_reading = city.earthly_readings.create(earthly_weather_station: ews,
+                    temp:                latest.main.temp.to_d,
+                    feels_like:          latest.main.feels_like.to_d,
+                    temp_min:            latest.main.temp_min.to_d,
+                    temp_max:            latest.main.temp_max.to_d,
+                    pressure:            latest.main.pressure,
+                    humidity:            latest.main.humidity.to_d,
+                    wind_speed:          latest.wind.speed.to_d,
+                    wind_deg:            latest.wind.deg.to_d,
+                    cloud_coverage_all:  latest.clouds.all,
+                    dt:                  latest.dt,
+                    recorded_at:         Time.at(latest.dt)
+                )
             end
-
-            # FIX/REPLACE:  hack to temporarily fix saving record before attributes are set
-            # and then saving another record with valid attributes
-            @city.earthly_readings.where(recorded_at: nil).delete_all
         end
     end
 
