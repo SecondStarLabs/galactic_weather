@@ -29,9 +29,9 @@ class WeatherEarthly
         OpenWeather::Current.geocode(lat, lon , options)
     end
 
-    def get_current_weather_for_a_list_of_city_ids(city_ids)
+    def get_current_weather_for_a_list_of_open_weather_ids(open_weather_ids)
         # OpenWeather::Current.cities([524901, 703448, 2643743], options)
-        OpenWeather::Current.cities(city_ids, options)
+        OpenWeather::Current.cities(open_weather_ids, options)
     end
 
     def get_current_weather_for_a_bounding_box(top_left_lat, top_left_lon,
@@ -54,5 +54,45 @@ class WeatherEarthly
         day_reading_to_json = day_reading.to_json
         day_representation = EarthlyRepresenter.new(day).from_json(day_reading_to_json)
     end
+
+    def collect_all_current_readings
+        collected_open_weather_ids  = EarthlyWeatherStation.all
+                                    .collect {|earthly_weather_station|  earthly_weather_station.open_weather_id }
+        current_readings            = self.get_current_weather_for_a_list_of_open_weather_ids(collected_open_weather_ids)
+        representations             = current_readings.fetch("list")
+                                    .collect {|current_reading| self.create_representation(current_reading)}
+
+    end
+
+    def save_all_current_readings
+        all_current_readings = WeatherEarthly.new.collect_all_current_readings
+        all_current_readings.each do |weather_station|
+            ews     = EarthlyWeatherStation.find_by!("open_weather_id = ?", weather_station.id)
+            city    = ews.cities.first
+
+            reading = city.earthly_readings.new(earthly_weather_station: ews)
+            # reading.temp = weather_station.main.temp.to_d
+            # reading.feels_like = weather_station.main.feels_like.to_d
+            # reading.temp_min = weather_station.main.temp_min.to_d
+            # reading.temp_max = weather_station.main.temp_max.to_d
+            # reading.pressure = weather_station.main.pressure
+            # reading.humidity = weather_station.main.humidity.to_d
+            # reading.wind_speed = weather_station.wind.speed.to_d
+            # reading.wind_deg = weather_station.wind.deg.to_d
+            # reading.cloud_coverage_all = weather_station.clouds.all
+            # reading.dt = weather_station.dt
+            reading.recorded_at = Time.at(weather_station.dt)
+
+            # guard for saving an invalid record with nil attributes
+            if reading.recorded_at.to_s.length > 0
+                reading.save!
+            end
+
+            # FIX/REPLACE:  hack to temporarily fix saving record before attributes are set
+            # and then saving another record with valid attributes
+            @city.earthly_readings.where(recorded_at: nil).delete_all
+        end
+    end
+
 end
 

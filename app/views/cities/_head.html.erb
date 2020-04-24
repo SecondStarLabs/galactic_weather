@@ -1,0 +1,14 @@
+<title><%= (yield(:title) + " - " +"Galactic Weather - Earth"  unless yield(:title).blank?).to_s + "Earth - Galactic Weather" %></title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+
+<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= stylesheet_link_tag 'cities', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google_maps_api_key %>&libraries=places&callback=initMap" async defer  data-turbolinks-eval="false">
+</script>

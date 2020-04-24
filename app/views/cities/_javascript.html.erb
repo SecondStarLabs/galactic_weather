@@ -1,0 +1,136 @@
+const previousWeatherToggle = document.querySelector(".show-previous-weather");
+const previousWeather = document.querySelector(".previous-weather");
+const windDirectionArrow = document.querySelector(
+  "[data-wind-direction-arrow]"
+);
+const currentSolElement = document.querySelector("[data-current-sol]");
+const currentDateElement = document.querySelector("[data-current-date]");
+const currentTempHighElement = document.querySelector(
+  "[data-current-temp-high]"
+);
+const currentTempLowElement = document.querySelector("[data-current-temp-low]");
+
+const windSpeedElement = document.querySelector("[data-wind-speed]");
+const windDirectionText = document.querySelector("[data-wind-direction-text]");
+
+const unitToggle = document.querySelector("[data-unit-toggle]");
+const metricRadio = document.getElementById("cel");
+const imperialRadio = document.getElementById("fah");
+
+const previousSols = document.querySelectorAll(
+  "button.previous-day__more-info"
+);
+const latestSolId = previousSols[previousSols.length - 1].id;
+// const sols = getWeather()
+
+let selectedSolId;
+selectedSolId = latestSolId;
+
+updateUnits();
+// displaySelectedSol(selectedSolId)
+// displayPreviousTemperatures()
+
+// displaySelectedSol(latestSolIndex)
+// getWeather()
+//   .then(sols => {
+//     console.log(sols);
+// })
+
+// event listeners
+previousWeatherToggle.addEventListener("click", () => {
+  previousWeather.classList.toggle("show-weather");
+});
+
+unitToggle.addEventListener("click", () => {
+  let metricUnits = !isMetric();
+  metricRadio.checked = metricUnits;
+  imperialRadio.checked = !metricUnits;
+  updateUnits();
+  // displaySelectedSol(selectedSolId)
+  displayPreviousTemperatures();
+  // displayPreviousSols(sols)
+});
+
+metricRadio.addEventListener("change", () => {
+  updateUnits();
+  // displaySelectedSol(selectedSolId)
+  displayPreviousTemperatures();
+  // displayPreviousSols(sols)
+});
+
+imperialRadio.addEventListener("change", () => {
+  updateUnits();
+  // displaySelectedSol(selectedSolId)
+  displayPreviousTemperatures();
+  // displayPreviousSols(sols)
+});
+
+//   windDirectionArrow.style.setProperty('--direction', `<%#= @latest_reading.wind_degrees %>deg`)
+
+function displayPreviousTemperatures() {
+  highTemps = document.querySelectorAll("span[data-temp-high]");
+  lowTemps = document.querySelectorAll("span[data-temp-low]");
+
+  for (i = 0; i < highTemps.length; ++i) {
+    highTemps[i].innerText = displayTemperature(
+      highTemps[i]["dataset"]["tempHigh"]
+    );
+  }
+  for (i = 0; i < lowTemps.length; ++i) {
+    lowTemps[i].innerText = displayTemperature(
+      lowTemps[i]["dataset"]["tempLow"]
+    );
+  }
+}
+
+function displaySelectedSol(sol_id) {
+  el = document.getElementById(sol_id);
+  let json = el.dataset.reading;
+  let data = JSON.parse(json);
+  // alert(data['sol'])
+  selectedSolId = sol_id;
+  currentSolElement.innerText = data["sol"];
+  currentDateElement.innerText = data["recorded-on"];
+  currentTempHighElement.innerText = displayTemperature(data["temp-high"]);
+  currentTempLowElement.innerText = displayTemperature(data["temp-low"]);
+  windSpeedElement.innerText = displaySpeed(data["wind-speed"]);
+  windDirectionArrow.style.setProperty(
+    "--direction",
+    `${data["wind-degrees"]}deg`
+  );
+  windDirectionText.innerText = data["wind-direction-text"];
+}
+
+function displayTemperature(temperature) {
+  let returnTemp = temperature;
+  if (!isMetric()) {
+    returnTemp = temperature * (9 / 5) + 32;
+  }
+  return Math.round(returnTemp);
+}
+
+function displaySpeed(speed) {
+  // alert("Speed Metric is " + isMetric())
+
+  let returnSpeed = speed;
+  if (!isMetric()) {
+    returnSpeed = speed / 1.609;
+  }
+
+  return Math.round(returnSpeed);
+}
+
+function updateUnits() {
+  const speedUnits = document.querySelectorAll("[data-speed-unit]");
+  const tempUnits = document.querySelectorAll("[data-temp-unit]");
+  speedUnits.forEach((unit) => {
+    unit.innerText = isMetric() ? "kph" : "mph";
+  });
+  tempUnits.forEach((unit) => {
+    unit.innerText = isMetric() ? "C" : "F";
+  });
+}
+
+function isMetric() {
+  return metricRadio.checked;
+}

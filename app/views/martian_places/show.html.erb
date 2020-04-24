@@ -1,6 +1,23 @@
+<% content_for :title, @martian_place.name %>
+
    <main class="mars-current-weather">
      <h1 class="main-title">
-        Latest weather at <%= @martian_place.name %>
+        Latest at <%= @martian_place.name %>  
+        <% if user_signed_in? %>
+          <% if current_user.admin %>
+            <div>
+              <%= link_to martian_places_path, class: 'btn btn-primary' do %>
+                All Martian Places
+              <% end %>            
+            </div>
+            <span>
+              <%= link_to edit_martian_place_path(@martian_place), class: 'btn btn-primary' do %>
+                Edit
+              <% end %>            
+            </span>
+          <% end %>
+        <% end %>
+
         <% unless @latest_reading %>
           <br>
           (no data available)
@@ -8,36 +25,23 @@
      </h1>
 
       <div class="page-header">
-        <%= link_to martian_places_path, class: 'btn btn-default' do %>
-          All Martian Places
-        <% end %>
 
-        <% if user_signed_in? %>
-          <% if current_user.admin %>
-            <%= link_to edit_martian_place_path(@martian_place), class: 'btn btn-primary' do %>
-              Edit
-            <% end %>
-          <% end %>
-        <% end %>
       </div>
 
      <div class="date">
        <h2 class="section-title section-title--date">
-          
-          <% if @latest_reading %>
-            <%= @latest_reading.recorded_on.strftime("%A") %>
-         
-         <% end %>
-         
-         <span data-current-sol></span>
+          Sol 
+          <span data-current-sol>
+            <% if @latest_reading %>
+              <%= @latest_reading.sol %>         
+            <% end %>         
+         </span>
         </h2>
        <p class="date__day" data-current-date>
           <% if @latest_reading %>
-          
-          <%= @latest_reading.recorded_on.strftime("%b %d") %></p>
-          
+            <%= "#{time_ago_in_words(@latest_reading.recorded_on)} ago"  %>
           <% end %>
-          
+        </p>
      </div>
 
      <div class="temp">
@@ -45,38 +49,31 @@
        <p class="reading">
          High:
          <span data-current-temp-high>
-          
-          <% if @latest_reading %>
-         <%= @latest_reading.temp_max %></span>
-         
-         <% end %>
+            <% if @latest_reading %>
+              <%= @latest_reading.temp_max.round %>
+            <% end %>
+          </span>
          
          °<span data-temp-unit></span>
         </p>
        <p class="reading">
          Low:
          <span data-current-temp-low>
-          <% if @latest_reading %>
-
-            <%= @latest_reading.temp_min %>
-            
-          <% end %>
-            
-         </span>
+            <% if @latest_reading %>
+              <%= @latest_reading.temp_min.round %>
+            <% end %>
+          </span>
          °<span data-temp-unit></span>
         </p>
      </div>
 
      <div class="wind">
-       <h2 class="section-title">Wind</h2>
+       <h2 class="section-title">Wind&#42;</h2>
        <p class="reading">
          <span data-wind-speed>
-          <% if @latest_reading %>
-         
-          <%= @latest_reading.wind_speed_av %>
-          
-          <% end %>
-          
+            <% if @latest_reading %>
+              <%= @latest_reading.wind_speed_av || "--" %>          
+            <% end %>
           </span>
          <span data-speed-unit></span>
         </p>
@@ -84,10 +81,8 @@
        <div class="wind__direction">
          <p class="sr-only" data-wind-direction-text>
           <% if @latest_reading %>
-          <%= @latest_reading.wind_degrees %>
-          
+            <%= @latest_reading.wind_compass_point %>
           <% end %>
-          
         </p>
 
          <!-- update --direction custom prop
@@ -97,8 +92,15 @@
      </div> 
 
      <div class="info">
-      <p>InSight is taking daily weather measurements (temperature, wind, pressure) on the surface of Mars at Elysium Planitia, a flat, smooth plain near Mars’ equator.</p>
-      <p>This is only a part of InSight’s mission. <a href="https://mars.nasa.gov/insight/mission/overview/">Click here</a> to find out more.</p>
+      <p>
+        &#42; Due North &amp; 0 speed readings indicates no wind reading for that day.
+      </p>
+      <p>Collecting weather on the surface of Mars at <%= @martian_place.name %> 
+          is only part of <%= @martian_place.martian_weather_stations.first.name %>'s mission. 
+          <a href="https://mars.nasa.gov/insight/mission/overview/" target="_blank">Click here</a> 
+          <a href="https://www.jpl.nasa.gov/missions/mars-science-laboratory-curiosity-rover-msl/">or here</a>
+          to find out more.
+      </p>
      </div>
 
      <div class="unit">
@@ -113,19 +115,174 @@
 
    </main>
 
-   <div class="previous-weather">
+   <div class="previous-weather" data-readings="<%= @latest_seven_readings.to_json %>">
      <!-- When clicked, toggle '.show-weather'
      to .previous-weather div -->
-     <button for="weather-toggle" class="show-previous-weather"><span>&#8593;</span> <span class="sr-only">Show previous weather</span></button>
-
+     <div class="previous-weather-button">
+      <button for="weather-toggle" class="show-previous-weather"><span>&#8593;</span> <span class="sr-only">Show previous weather</span></button>
+     </div>
+     
      <h2 class="main-title previous-weather__title">Previous 7 days</h2> 
 
-     <div class="previous-days" data-previous-sols></div>
+     <div class="previous-days" data-previous-sols >
+        <% if @latest_seven_readings.length >  2 %>
+            <%= render(partial: "data_previous_day", collection: @latest_seven_readings) %>
+        <% else %>
+            <%= render "data_previous_day_blank" %>
+        <% end %>
+     </div>
    </div>
-   <% if @latest_seven_readings.length >  2 %>
-       <%= render(partial: "data_previous_day", collection: @latest_seven_readings) %>
-   <% else %>
-       <%= render "data_previous_day_blank" %>
-   <% end %>
+
+
+
 
     
+<% wind_degrees =  @latest_reading.wind_degrees %>
+<script>
+  const API_KEY = 'DEMO_KEY'
+  const API_URL = `https://api.nasa.gov/insight_weather/?api_key=${API_KEY}&feedtype=json&ver=1.0`
+
+  const previousWeatherToggle   = document.querySelector('.show-previous-weather');
+  const previousWeather         = document.querySelector('.previous-weather');
+  const windDirectionArrow      = document.querySelector('[data-wind-direction-arrow]');
+  const currentSolElement       = document.querySelector('[data-current-sol]');
+  const currentDateElement      = document.querySelector('[data-current-date]');
+  const currentTempHighElement  = document.querySelector('[data-current-temp-high]');
+  const currentTempLowElement   = document.querySelector('[data-current-temp-low]');
+
+const windSpeedElement          = document.querySelector('[data-wind-speed]');
+const windDirectionText         = document.querySelector('[data-wind-direction-text]');
+
+const unitToggle                = document.querySelector('[data-unit-toggle]')
+const metricRadio               = document.getElementById('cel')
+const imperialRadio             = document.getElementById('fah')
+
+const previousSols              = document.querySelectorAll("button.previous-day__more-info");
+const latestSolId               = previousSols[previousSols.length-1].id
+  // const sols = getWeather()
+
+  let selectedSolId
+  selectedSolId = latestSolId
+
+  updateUnits()
+  displaySelectedSol(selectedSolId)
+  displayPreviousTemperatures()
+
+  // displaySelectedSol(latestSolIndex)
+  // getWeather()
+  //   .then(sols => {
+  //     console.log(sols);
+  // })
+
+  // event listeners
+  previousWeatherToggle.addEventListener('click', () => {
+    previousWeather.classList.toggle('show-weather')
+  })
+
+  unitToggle.addEventListener('click', () => {
+		let metricUnits = !isMetric()
+		metricRadio.checked = metricUnits
+		imperialRadio.checked = !metricUnits
+		updateUnits()
+		displaySelectedSol(selectedSolId)
+    displayPreviousTemperatures()
+		// displayPreviousSols(sols)
+	})
+
+	metricRadio.addEventListener('change', () => {
+		updateUnits()
+		displaySelectedSol(selectedSolId)
+    displayPreviousTemperatures()
+		// displayPreviousSols(sols)
+	})
+
+	imperialRadio.addEventListener('change', () => {
+		updateUnits()
+		displaySelectedSol(selectedSolId)
+    displayPreviousTemperatures()
+		// displayPreviousSols(sols)
+	})
+
+  windDirectionArrow.style.setProperty('--direction', `<%= @latest_reading.wind_degrees %>deg`)
+
+  function displayPreviousTemperatures() {
+    highTemps = document.querySelectorAll("span[data-temp-high]")
+    lowTemps  = document.querySelectorAll("span[data-temp-low]")
+
+    for (i = 0; i < highTemps.length; ++i) {
+      highTemps[i].innerText = displayTemperature(highTemps[i]['dataset']['tempHigh']);
+    } 
+    for (i = 0; i < lowTemps.length; ++i) {
+      lowTemps[i].innerText = displayTemperature(lowTemps[i]['dataset']['tempLow']);
+    } 
+  }
+
+  function displaySelectedSol(sol_id) {
+    el = document.getElementById(sol_id)
+    let json = el.dataset.reading;
+    let data = JSON.parse(json);
+        // alert(data['sol'])
+    selectedSolId = sol_id
+    currentSolElement.innerText = data['sol']
+    currentDateElement.innerText = data['recorded-on']
+    currentTempHighElement.innerText =  displayTemperature(data['temp-high'])
+    currentTempLowElement.innerText = displayTemperature(data['temp-low'] )
+    windSpeedElement.innerText =  displaySpeed(data['wind-speed'])
+    windDirectionArrow.style.setProperty('--direction', `${data['wind-degrees']}deg`)
+    windDirectionText.innerText = data['wind-direction-text']
+  }
+
+  function displayTemperature(temperature) {
+
+    let returnTemp = temperature
+    if (!isMetric()) {
+      returnTemp = (temperature *(9/5)) + 32
+    }
+    return Math.round(returnTemp)
+  }
+
+  function getWeather() {
+    const el = document.querySelector('.previous-weather');
+
+    let json = el.dataset.readings;
+    let solData = JSON.parse(json);
+    // return solData
+    return Object.entries(solData).map(([sol, data]) => {
+      return {
+        sol: sol,
+        maxTemp: data.temp_max,
+        minTemp: data.temp_min,
+        windSpeed: data.wind_speed_av,
+        windDirectionDegrees: data.wind_degrees,
+        windDirectionCardinal: data.wind_compass_point,
+        date: new Date(data.recorded_on)
+      }
+    })
+  }
+
+  function displaySpeed(speed) {
+    // alert("Speed Metric is " + isMetric())
+
+    let returnSpeed = speed
+    if (!isMetric()) {
+      returnSpeed = speed / 1.609
+    }
+    
+    return Math.round(returnSpeed)
+  }
+
+  function updateUnits() {
+    const speedUnits = document.querySelectorAll('[data-speed-unit]')
+    const tempUnits = document.querySelectorAll('[data-temp-unit]')
+    speedUnits.forEach(unit => {
+      unit.innerText = isMetric() ? 'kph' : 'mph'
+    })
+    tempUnits.forEach(unit => {
+      unit.innerText = isMetric() ? 'C' : 'F'
+    })
+  }
+
+  function isMetric() {
+	  return metricRadio.checked
+  }
+</script>    

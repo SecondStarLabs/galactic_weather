@@ -6,10 +6,11 @@ class City < ApplicationRecord
 
     after_commit        :schedule_creation_of_weather_station, on: [:create, :update]
 
-    validates           :name, presence: true
-    validates           :latitude, presence: true
-    validates           :longitude, presence: true
-    validates           :address, presence: true
+    validates                   :name, presence: true
+    validates                   :latitude, presence: true
+    validates                   :longitude, presence: true
+    validates                   :address, presence: true
+    validates_uniqueness_of     :address
     
     def find_country_code
         c = Country.find_by_name(self.country)
