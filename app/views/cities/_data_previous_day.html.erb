@@ -7,14 +7,14 @@
         <p class="previous-day__temp high">
           High:
           <span data-temp-high="<%= data_previous_day.temp_max %>" >
-                <%= data_previous_day.temp_max.round %>
+                <%= data_previous_day.temp_max.to_i %>
           </span>
           °<span data-temp-unit></span>
         </p>
         <p class="previous-day__temp low">
           Low:
           <span data-temp-low="<%= data_previous_day.temp_min %>" >
-            <%= data_previous_day.temp_min.round %>
+            <%= data_previous_day.temp_min.to_i %>
           </span>
           °<span data-temp-unit></span>
         </p>
