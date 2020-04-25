@@ -22,6 +22,12 @@ class City < ApplicationRecord
         
     end
 
+    def collect_daily_readings_of_city(number_of_days)
+      readings_grouped_by_days  = self.earthly_readings.group_by_day(series: true) { |u| u.created_at }
+      daily_readings            =  readings_grouped_by_days.values.collect {|i| i.last}
+      daily_readings            =  daily_readings.last(number_of_days)
+    end
+
     # to avoid circular running of job after commit, WeatherStation should
     # belong_to city
     def schedule_creation_of_weather_station

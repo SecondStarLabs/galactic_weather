@@ -1,4 +1,5 @@
 class MartianPlacesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy, :create]
   before_action :set_martian_place, only: [:show, :edit, :update, :destroy]
 
   # GET /martian_places

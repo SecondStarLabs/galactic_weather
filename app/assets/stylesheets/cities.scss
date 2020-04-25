@@ -249,7 +249,7 @@ a {
 
 .previous-days {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .previous-weather__title {
@@ -284,6 +284,9 @@ a {
   }
 }
 
+.previous-day {
+  margin: 0px 15px 0px;
+}
 .show-weather.previous-weather {
   transform: translateY(0);
 

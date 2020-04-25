@@ -1,4 +1,5 @@
 class CitiesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy, :create]
   before_action :set_city, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy ]
 
@@ -11,8 +12,9 @@ class CitiesController < ApplicationController
   # GET /cities/1
   # GET /cities/1.json
   def show
-        @latest_seven_readings = @city.earthly_readings.last(7)
-    @latest_reading             = @latest_seven_readings.last
+    number_of_days          = 7
+    @latest_seven_readings  = @city.collect_daily_readings_of_city(number_of_days)
+    @latest_reading         = @latest_seven_readings.last
   end
 
   # GET /cities/new
