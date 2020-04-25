@@ -1,4 +1,5 @@
 class MartianWeatherStationsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_martian_weather_station, only: [:show, :edit, :update, :destroy]
 
   # GET /martian_weather_stations

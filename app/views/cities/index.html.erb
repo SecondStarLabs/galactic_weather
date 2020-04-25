@@ -7,9 +7,12 @@
   </div>
 
   <div class="col-sm-6 text-right">
-  <%= link_to new_city_path, class: 'btn btn-primary' do %>
-    Add New City
-  <% end %>
+    <% if user_signed_in? %>
+      <%= link_to new_city_path, class: 'btn btn-primary' do %>
+        Add New City
+      <% end %>
+    <% end %>
+
   </div>
 </div>
 <div class="mars-current-weather">

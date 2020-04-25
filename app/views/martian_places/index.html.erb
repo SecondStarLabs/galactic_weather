@@ -7,9 +7,11 @@
   </div>
 
   <div class="col-sm-6 text-right">
-  <%= link_to new_martian_place_path, class: 'btn btn-primary' do %>
-    Add New Martian place
-  <% end %>
+    <% if user_signed_in? %>
+      <%= link_to new_martian_place_path, class: 'btn btn-primary' do %>
+        Add New Martian place
+      <% end %>  
+    <% end %>
   </div>
 </div>
 
