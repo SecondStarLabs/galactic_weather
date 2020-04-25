@@ -405,7 +405,6 @@ a {
   }
 
   .fixed_table_header thead {
-    background: black;
     color: #fff;
   }
 
@@ -415,6 +414,10 @@ a {
     text-align: left;
     width: 200px;
   }
+}
+
+.fixed_table_header th {
+  background: black;
 }
 
 @media (min-width: 900px) {
