@@ -6,8 +6,12 @@ task :update_earth => :environment do
 end
 
 task :update_mars_from_station_one => :environment do
-UpdateReadingsFromMarsWeatherStationJob.perform_later(1)
+    puts "Updating readings for Mars station one..."
+    UpdateReadingsFromMarsWeatherStationJob.perform_later(1)
 end
+
 task :update_mars_from_station_two => :environment do
-UpdateReadingsFromMarsWeatherStationJob.perform_later(2)
+  puts "Updating readings for  Mars station two..."
+  UpdateReadingsFromMarsWeatherStationJob.perform_later(2)
+  puts "done."
 end
