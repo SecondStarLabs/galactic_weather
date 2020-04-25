@@ -11,8 +11,4 @@ class EarthlyReading < ApplicationRecord
                                   .collect {|current_reading| we.create_representation(current_reading)}
 
   end
-
-  def save_all_current_readings
-      
-  end
 end

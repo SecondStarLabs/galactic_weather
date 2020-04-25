@@ -84,3 +84,5 @@ gem 'open-weather', '~> 0.12.0'
 gem 'countries', '~> 3.0', '>= 3.0.1', require: 'countries/global'
 # store assets on amazon s3
 gem 'aws-sdk-s3', '~> 1.61', '>= 1.61.2'
+# group previdous readings by date
+gem 'groupdate', '~> 5.0'
