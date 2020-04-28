@@ -46,13 +46,20 @@
       </div>
 
      <div class="date">
-       <h2 class="section-title section-title--date">
-          <span data-current-sol>
-            <% if @latest_reading %>
-              <%= @latest_reading.recorded_at.strftime("%A") %>         
-            <% end %>         
-         </span>
-        </h2>
+       <% if @latest_reading %>
+          
+          <% if @latest_reading.recorded_at.strftime("%A").length < 9 %>
+            <h2 class="section-title section-title--date">
+          <% else %>
+            <h2 class="section-title">
+          <% end %>
+          
+              <span data-current-sol>
+                <%= @latest_reading.recorded_at.strftime("%A") %>         
+              </span>
+            </h2>
+        <% end %>         
+
        <p class="date__day" data-current-date>
           <% if @latest_reading %>
             <%= "#{time_ago_in_words(@latest_reading.recorded_at)} ago"  %>
@@ -117,12 +124,12 @@
 
      <div class="unit">
        <label for="cel">°C</label>
-       <input type="radio" id="cel" name="unit" checked>
+       <input type="radio" id="cel" class="cel" name="unit" checked>
        <!-- when unit__toggle is clicked
             checkbox needs to change -->
        <button class="unit__toggle" data-unit-toggle></button>
        <label for="fah">°F</label>
-       <input type="radio" id="fah" name="unit">
+       <input type="radio" id="fah" class="fah" name="unit">
      </div> 
 
    </main>
@@ -145,7 +152,58 @@
      </div>
    </div>
 
-  
+  <style>
+    .nav-footer {
+      position:fixed;
+      left:0px;
+      bottom:0px;
+      height: 50px;
+      width:100%;
+      background:#999;
+    }
+
+    .nav-footer a {
+      color: white;
+    }
+
+    .previous-weather {
+      padding-bottom: 60px;
+    }
+    @media (min-width: 900px) {
+      .nav-footer {
+        display: none;
+      }
+    .previous-weather {
+      margin-bottom: 0em;
+    }}
+
+    /* nav-footer layout*/
+
+    .nav-footer {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      align-items: center;
+    }
+
+    .back-link { grid-area: 1 / 1 / 2 / 3; }
+    .mid-section { grid-area: 1 / 3 / 2 / 5; }
+    
+    @media (min-width: 700px) {
+      .nav-footer {
+        display: none;
+      }
+    }
+
+  </style>
+
+  <div class="nav-footer">
+    <div class="back-link">
+      <%= link_to '<< Back', cities_path %>
+    </div>
+  </div> 
 
 <script>
 
@@ -157,15 +215,16 @@
   const currentTempHighElement  = document.querySelector('[data-current-temp-high]');
   const currentTempLowElement   = document.querySelector('[data-current-temp-low]');
 
-const windSpeedElement          = document.querySelector('[data-wind-speed]');
-const windDirectionText         = document.querySelector('[data-wind-direction-text]');
+  const windSpeedElement          = document.querySelector('[data-wind-speed]');
+  const windDirectionText         = document.querySelector('[data-wind-direction-text]');
 
-const unitToggle                = document.querySelector('[data-unit-toggle]')
-const metricRadio               = document.getElementById('cel')
-const imperialRadio             = document.getElementById('fah')
+  const unitToggle                = document.querySelector('.unit__toggle')
+  // const unitToggleFooter          = document.querySelector('[data-unit-toggle-footer]')
+  const metricRadio               = document.querySelector(".cel");
+  const imperialRadio             = document.querySelector(".fah");
 
-const previousSols              = document.querySelectorAll("button.previous-day__more-info");
-const latestSolId               = previousSols[previousSols.length-1].id
+  const previousSols              = document.querySelectorAll("button.previous-day__more-info");
+  const latestSolId               = previousSols[previousSols.length-1].id
   // const sols = getWeather()
 
   let selectedSolId
@@ -187,6 +246,7 @@ const latestSolId               = previousSols[previousSols.length-1].id
     // displayPreviousTemperatures()
 		// displayPreviousSols(sols)
 	})
+
 
 	metricRadio.addEventListener('change', () => {
 		updateUnits()
