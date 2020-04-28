@@ -631,3 +631,42 @@ $circle-image-border-size: 10px;
     }
   }
 }
+
+// cities index
+.index {
+  overflow: visible;
+  background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  body {
+  }
+
+  h1 {
+    margin: 5rem;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    //grid-gap: 1rem;
+    cursor: pointer;
+
+    .card {
+      transition: transform 1s;
+
+      &:hover {
+        transform: translateY(-10px);
+      }
+
+      .info {
+        padding: 1rem;
+        //display: none;
+      }
+
+      .desc {
+        color: gray;
+      }
+    }
+  }
+}

@@ -1,44 +1,5 @@
 
-<div class="container">
-
-  <div class="d-flex flex-column flex-md-row">
-    <%= render(partial: "city", collection: @cities) %>
-
-<!--    <div class="col-sm">
-      <div class="card custom-card">
-        <div class="card-cover" style="background-image: url( https://picsum.photos/600/400/?random );">
-          <div class="circle-image" style="background-image: url( https://picsum.photos/200/110/?random );"></div>
-        </div>        
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div> 
-    <div class="col-sm">
-      <div class="card custom-card">
-        <div class="card-cover" style="background-image: url( https://picsum.photos/605/405/?random );">
-          <div class="circle-image" style="background-image: url( https://picsum.photos/205/115/?random );"></div>
-        </div>        
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div> 
-    </div> -->
-    <div class="col-sm">
-      <div class="card custom-card">
-        <div class="card-cover" style="background-image: url( https://picsum.photos/610/410/?random );">
-          <div class="circle-image" style="background-image: url( https://picsum.photos/210/120/?random );"></div>
-        </div>        
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<% content_for(:body_class) { 'cities index' } %>
 
 
 <div class="row">
@@ -54,31 +15,9 @@
     <% end %>
   </div>
 </div>
-<div class="mars-current-weather">
-  <div class="table-responsive index-listing">
-    <table class="table table-striped table-bordered table-hover fixed_table_header">
-      <thead>
-        <tr class="section-title" style="color: var(--clr-light)">
-      
-          <th>Name</th>
-          <th>Country</th>
-              
-        </tr>
-      </thead>
 
-      <tbody style="display:block">
-        <% @cities.each do |city| %>
-          <%= content_tag :tr, id: dom_id(city), class: dom_class(city) do %>
-            
-              <td><%= link_to city.name, city %></td>
-            
+<main>
+    
+    <%= render(partial: "city", collection: @cities) %>
 
-                        <td class="reading"><%= city.country %></td>
-            
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
-
+</main>
