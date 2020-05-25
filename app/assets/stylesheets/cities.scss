@@ -43,9 +43,6 @@ body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
   line-height: 1.6;
-  background: url(asset_path("mars.jpg"));
-  background-size: cover;
-  color: var(--clr-light);
   min-height: 100vh;
 }
 
@@ -63,6 +60,10 @@ a {
   }
 }
 
+.cities {
+  background: url(asset_path("dark_plus_background.png"));
+  background-repeat: repeat;
+}
 .main-title {
   font-size: var(--fs-h1);
   font-weight: var(--fw-light);
@@ -635,12 +636,6 @@ $circle-image-border-size: 10px;
 // cities index
 .index {
   overflow: visible;
-  background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  body {
-  }
 
   h1 {
     margin: 5rem;
