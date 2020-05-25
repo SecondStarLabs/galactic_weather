@@ -1,4 +1,4 @@
-
+<!-- background image found at -->
 <% content_for(:body_class) { 'cities index' } %>
 
 
@@ -17,7 +17,7 @@
 </div>
 
 <main>
-    
-    <%= render(partial: "city", collection: @cities) %>
+    <%= render 'world_map' %>
+    <%#= render(partial: "city", collection: @cities) %>
 
 </main>
