@@ -22,21 +22,14 @@
   --fs-h2: 1.75rem;
   --fs-body: 1rem;
   --fs-xl: 4rem;
-  --clr-light: #fff;
-  --clr-gray: #989898;
-  --clr-dark: #444;
+  --clr-light-font: #fefefe;
+  --clr-gray: #4f5660;
+  --clr-dark-slate: #272e38;
+  --clr-light-slate: #313842;
   --clr-accent: #d06d6d;
   --clr-accent-dark: #613131;
-}
-
-.sr-only:not(:focus):not(:active) {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+  --width-city-index: 100px;
+  --height-index-gap: 10px;
 }
 
 body {
@@ -53,10 +46,10 @@ h3 {
 }
 
 a {
-  color: var(--clr-accent);
+  color: var(--clr-light-font);
 
   &:hover {
-    color: var(--clr-accent-dark);
+    color: var(--clr-light-font);
   }
 }
 
@@ -64,6 +57,53 @@ a {
   background: url(asset_path("dark_plus_background.png"));
   background-repeat: repeat;
 }
+
+.location-list ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: var(--height-index-gap);
+  margin-left: 0px;
+}
+
+.city-listing {
+  display: grid;
+  grid-template-columns: var(--width-city-index) 1fr;
+  column-gap: 50px;
+
+  background: var(--clr-light-slate);
+  border-top: 5px solid var(--clr-light-slate);
+  &:hover {
+    background: var(--clr-dark-slate);
+  }
+}
+
+.city-listing a:focus {
+  color: white;
+  text-decoration: none;
+}
+
+.city-listing a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.city-listing__id {
+  border-top: var(--height-index-gap) solid #f9423a;
+  text-align: right;
+  font-weight: bold;
+}
+
+.city-listing__location {
+  border-top: 5px solid var(--clr-light-slate);
+  border-top: var(--height-index-gap) solid var(--clr-light-slate);
+  justify-content: center;
+  text-align: left;
+
+  &:hover {
+    background: var(--clr-dark-slate);
+  }
+}
+
 .main-title {
   font-size: var(--fs-h1);
   font-weight: var(--fw-light);
@@ -642,26 +682,8 @@ $circle-image-border-size: 10px;
   }
 
   main {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-    //grid-gap: 1rem;
-    cursor: pointer;
-
-    .card {
-      transition: transform 1s;
-
-      &:hover {
-        transform: translateY(-10px);
-      }
-
-      .info {
-        padding: 1rem;
-        //display: none;
-      }
-
-      .desc {
-        color: gray;
-      }
-    }
+  }
+  location-list {
+    background: #4f5660;
   }
 }
