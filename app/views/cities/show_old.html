@@ -1,0 +1,329 @@
+<style>
+    .footer .container{        
+        /* padding-bottom: 40px; */
+                /* width: 100%; */
+        /* position: fixed;         */
+        /* background: #333; */
+        /* padding: 10px 0; */
+        /* color: #fff; */
+        /* bottom: 0; */
+
+    }
+
+    body {
+      background: no-repeat url("https://images.pexels.com/photos/1031780/pexels-photo-1031780.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    }
+</style>
+
+<% content_for :title, @city.name %>
+
+   <main class="mars-current-weather">
+     <h1 class="main-title">
+        Latest for <%= @city.name %>  
+        <% if user_signed_in? %>
+          <% if current_user.admin %>
+            <div>
+              <%= link_to cities_path, class: 'btn btn-primary' do %>
+                All Cities
+              <% end %>            
+            </div>
+            <span>
+              <%= link_to edit_city_path(@city), class: 'btn btn-primary' do %>
+                Edit
+              <% end %>            
+            </span>
+          <% end %>
+        <% end %>
+
+        <% unless @latest_reading %>
+          <br>
+          (no data available)
+        <% end %>
+     </h1>
+
+      <div class="page-header">
+
+      </div>
+
+     <div class="date">
+       <% if @latest_reading %>
+          
+          <% if @latest_reading.recorded_at.strftime("%A").length < 9 %>
+            <h2 class="section-title section-title--date">
+          <% else %>
+            <h2 class="section-title">
+          <% end %>
+          
+              <span data-current-sol>
+                <%= @latest_reading.recorded_at.strftime("%A") %>         
+              </span>
+            </h2>
+        <% end %>         
+
+       <p class="date__day" data-current-date>
+          <% if @latest_reading %>
+            <%= "#{time_ago_in_words(@latest_reading.recorded_at)} ago"  %>
+          <% end %>
+        </p>
+     </div>
+
+     <div class="temp">
+       <h2 class="section-title">Temperature</h2>
+       <p class="reading">
+         High:
+         <span data-current-temp-high>
+            <% if @latest_reading %>
+              <%= @latest_reading.temp_max.to_i %>
+            <% end %>
+          </span>
+         
+         °<span data-temp-unit></span>
+        </p>
+       <p class="reading">
+         Low:
+         <span data-current-temp-low>
+            <% if @latest_reading %>
+              <%= @latest_reading.temp_min.to_i %>
+            <% end %>
+          </span>
+         °<span data-temp-unit></span>
+        </p>
+     </div>
+
+     <div class="wind">
+       <h2 class="section-title">Wind&#42;</h2>
+       <p class="reading">
+         <span data-wind-speed>
+            <% if @latest_reading %>
+              <%= @latest_reading.wind_speed || "--" %>          
+            <% end %>
+          </span>
+         <span data-speed-unit></span>
+        </p>
+
+       <div class="wind__direction">
+         <p class="sr-only" data-wind-direction-text>
+          <% if @latest_reading %>
+            <%#= @latest_reading.wind_compass_point %>
+          <% end %>
+        </p>
+
+         <!-- update --direction custom prop
+              to change arrow direction -->
+         <div class="wind__arrow" data-wind-direction-arrow></div>
+       </div>
+     </div> 
+
+     <div class="info">
+      <p>
+        &#42; Due North &amp; 0 mph/kph speed readings indicates no wind reading for that day.
+      </p>
+      <p>Collected at OpenWeather's <%= @city.earthly_weather_stations.first.name %> weather station. 
+      </p>
+     </div>
+
+     <div class="unit">
+       <label for="cel">°C</label>
+       <input type="radio" id="cel" class="cel" name="unit" checked>
+       <!-- when unit__toggle is clicked
+            checkbox needs to change -->
+       <button class="unit__toggle" data-unit-toggle></button>
+       <label for="fah">°F</label>
+       <input type="radio" id="fah" class="fah" name="unit">
+     </div> 
+
+   </main>
+
+   <div class="previous-weather">
+     <!-- When clicked, toggle '.show-weather'
+     to .previous-weather div -->
+     <div class="previous-weather-button">
+      <button for="weather-toggle" class="show-previous-weather"><span>&#8593;</span> <span class="sr-only">Show previous weather</span></button>
+     </div>
+     
+     <h2 class="main-title previous-weather__title">Previous 7 days</h2> 
+
+     <div class="previous-days" data-previous-sols >
+        <% if @latest_seven_readings.length >  0 %>
+            <%= render(partial: "data_previous_day", collection: @latest_seven_readings) %>
+        <% else %>
+            <%= render "data_previous_day_blank" %>
+        <% end %>
+     </div>
+   </div>
+
+  <style>
+    .nav-footer {
+      position:fixed;
+      left:0px;
+      bottom:0px;
+      height: 50px;
+      width:100%;
+      background:#999;
+    }
+
+    .nav-footer a {
+      color: white;
+    }
+
+    .previous-weather {
+      padding-bottom: 60px;
+    }
+    @media (min-width: 900px) {
+      .nav-footer {
+        display: none;
+      }
+    .previous-weather {
+      margin-bottom: 0em;
+    }}
+
+    /* nav-footer layout*/
+
+    .nav-footer {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      align-items: center;
+    }
+
+    .back-link { grid-area: 1 / 1 / 2 / 3; }
+    .mid-section { grid-area: 1 / 3 / 2 / 5; }
+    
+    @media (min-width: 700px) {
+      .nav-footer {
+        display: none;
+      }
+    }
+
+  </style>
+
+  <div class="nav-footer">
+    <div class="back-link">
+      <%= link_to '<< Back', cities_path %>
+    </div>
+  </div> 
+
+<script>
+
+  const previousWeatherToggle   = document.querySelector('.show-previous-weather');
+  const previousWeather         = document.querySelector('.previous-weather');
+  const windDirectionArrow      = document.querySelector('[data-wind-direction-arrow]');
+  const currentSolElement       = document.querySelector('[data-current-sol]');
+  const currentDateElement      = document.querySelector('[data-current-date]');
+  const currentTempHighElement  = document.querySelector('[data-current-temp-high]');
+  const currentTempLowElement   = document.querySelector('[data-current-temp-low]');
+
+  const windSpeedElement          = document.querySelector('[data-wind-speed]');
+  const windDirectionText         = document.querySelector('[data-wind-direction-text]');
+
+  const unitToggle                = document.querySelector('.unit__toggle')
+  // const unitToggleFooter          = document.querySelector('[data-unit-toggle-footer]')
+  const metricRadio               = document.querySelector(".cel");
+  const imperialRadio             = document.querySelector(".fah");
+
+  const previousSols              = document.querySelectorAll("button.previous-day__more-info");
+  const latestSolId               = previousSols[previousSols.length-1].id
+  // const sols = getWeather()
+
+  let selectedSolId
+  selectedSolId = latestSolId
+
+  updateUnits()
+
+  // event listeners
+  previousWeatherToggle.addEventListener('click', () => {
+    previousWeather.classList.toggle('show-weather')
+  })
+
+  unitToggle.addEventListener('click', () => {
+		let metricUnits = !isMetric()
+		metricRadio.checked = metricUnits
+		imperialRadio.checked = !metricUnits
+		updateUnits()
+		displaySelectedSol(selectedSolId)
+    // displayPreviousTemperatures()
+		// displayPreviousSols(sols)
+	})
+
+
+	metricRadio.addEventListener('change', () => {
+		updateUnits()
+		// displaySelectedSol(selectedSolId)
+    // displayPreviousTemperatures()
+		// displayPreviousSols(sols)
+	})
+
+	imperialRadio.addEventListener('change', () => {
+		updateUnits()
+		// displaySelectedSol(selectedSolId)
+    displayPreviousTemperatures()
+		// displayPreviousSols(sols)
+	})
+
+//   windDirectionArrow.style.setProperty('--direction', `<%#= @latest_reading.wind_degrees %>deg`)
+
+  function displayPreviousTemperatures() {
+    highTemps = document.querySelectorAll("span[data-temp-high]")
+    lowTemps  = document.querySelectorAll("span[data-temp-low]")
+
+    for (i = 0; i < highTemps.length; ++i) {
+      highTemps[i].innerText = displayTemperature(highTemps[i]['dataset']['tempHigh']);
+    } 
+    for (i = 0; i < lowTemps.length; ++i) {
+      lowTemps[i].innerText = displayTemperature(lowTemps[i]['dataset']['tempLow']);
+    } 
+  }
+
+  function displaySelectedSol(sol_id) {
+    el = document.getElementById(sol_id)
+    let json = el.dataset.reading;
+    let data = JSON.parse(json);
+        // alert("hotel")
+    // currentSolElement.innerText = data['sol']
+    currentDateElement.innerText = data['recorded-at']
+    currentTempHighElement.innerText =  displayTemperature(data['temp-high'])
+    currentTempLowElement.innerText = displayTemperature(data['temp-low'] )
+    windSpeedElement.innerText =  displaySpeed(data['wind-speed'])
+    windDirectionArrow.style.setProperty('--direction', `${data['wind-degrees']}deg`)
+    windDirectionText.innerText = data['wind-direction-text']
+  }
+
+  function displayTemperature(temperature) {
+
+    let returnTemp = temperature
+    if (!isMetric()) {
+      returnTemp = (temperature *(9/5)) + 32
+    }
+    return Math.round(returnTemp)
+  }
+
+
+  function displaySpeed(speed) {
+    // alert("Speed Metric is " + isMetric())
+
+    let returnSpeed = speed
+    if (!isMetric()) {
+      returnSpeed = speed / 1.609
+    }
+    
+    return Math.round(returnSpeed)
+  }
+
+  function updateUnits() {
+    const speedUnits = document.querySelectorAll('[data-speed-unit]')
+    const tempUnits = document.querySelectorAll('[data-temp-unit]')
+    speedUnits.forEach(unit => {
+      unit.innerText = isMetric() ? 'kph' : 'mph'
+    })
+    tempUnits.forEach(unit => {
+      unit.innerText = isMetric() ? 'C' : 'F'
+    })
+  }
+
+  function isMetric() {
+	  return metricRadio.checked
+  }
+</script>    
+<%#= render 'javascript' %>
