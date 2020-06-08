@@ -1,22 +1,13 @@
-    <div class="col-sm">
-      <%= link_to city do %>
-      <div class="card custom-card">
-        <div class="card-cover" style="background-image: url( https://picsum.photos/600/400/?random );">
-          <div class="circle-image" style="background-image: url( https://picsum.photos/200/110/?random );"></div>
-        </div>        
-        <div class="card-body">
-          <h5 class="card-title"><%= link_to city.name, city %></h5>
-          <p class="card-text">
-          <% if city.earthly_readings.length > 0 %>
-            <%= city.earthly_readings.last.temp %>° C            
-          <% else %>
-            Currently Not Available
-          <% end %>
-            
-          </p>
-        </div>
-      </div>
-      
-      <% end %>
-      
-    </div>
+
+<li class="city-listing"> <!-- grid listing of name -->
+  <%= link_to city, class:"city-listing__id" do %>
+      <%= city.id.to_s.rjust(3, '0') %> 
+  <% end %>
+  <%= link_to city do %>
+      <p class="city-listing__location">
+        <span><%= city.name %></span><br />
+        <span class="card_listing__location"><%= city.country %></span>            
+      </p>  
+  <% end %>
+    
+</li>

@@ -32,6 +32,8 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :amazon
 
+  # https://dev.to/swanny85/rails-6-and-ngrok-219a
+  config.hosts << /[a-z0-9]+\.ngrok\.io/
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 

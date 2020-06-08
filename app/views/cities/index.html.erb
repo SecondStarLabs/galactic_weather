@@ -3,21 +3,14 @@
 
 
 <div class="row">
-  <div class="col-sm-6">
-    <h1>Cities</h1>
-  </div>
-
-  <div class="col-sm-6 text-right">
-    <% if user_signed_in? %>
-      <%= link_to new_city_path, class: 'btn btn-primary' do %>
-        Add New City
-      <% end %>
-    <% end %>
-  </div>
-</div>
 
 <main>
-    <%= render 'world_map' %>
-    <%#= render(partial: "city", collection: @cities) %>
+  <div class="location-list" >
+    <ul> <!-- display grid -->
+      <%= render partial: "city", collection: @cities %>
+    </ul>
+  </div>
+  <%#= render 'world_map' %>
+  <%#= render(partial: "city", collection: @cities) %>
 
 </main>
